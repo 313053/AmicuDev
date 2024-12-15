@@ -61,6 +61,7 @@ export default {
   				ring: 'hsl(var(--sidebar-ring))'
   			},
 			navbar: {
+				primary: 'hsl(var(--navbar-primary))',
 				background: 'hsl(var(--navbar-background))',
 				accent: 'hsl(var(--navbar-accent))',
 			}
