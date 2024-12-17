@@ -3,6 +3,8 @@ import { sampleProjects, sidebarLinks } from "@/lib/sidebarUtils"
 import Link from "next/link"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { ChevronRight, FolderCode } from "lucide-react"
+import { SignedIn, SignedOut } from "@clerk/nextjs"
+import SignInButton from "../navbar/sign-in-button"
 
 export function AppSidebar() {
   return (
@@ -16,44 +18,52 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent >
-        <SidebarMenu>
-          {sidebarLinks.map((link) => (
-            <SidebarMenuItem key={link.name}>
-              <SidebarMenuButton asChild>
-                <Link href={link.url}>
-                  <link.icon />
-                  <span className="text-white font-mono">{link.name}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-        <SidebarMenu>
-          <Collapsible defaultOpen={false} className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton>
-                    <FolderCode />
-                    <span className="text-white font-mono">Projects</span>
-                    <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"/>
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    {sampleProjects.map((project) => (
-                      <SidebarMenuSubItem key={project.name}>
-                        <SidebarMenuButton asChild>
-                          <Link href={project.url}>
-                            <span className="text-white font-mono">{project.name}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuSubItem>
-                    ))}
-                  </SidebarMenuSub>
-                </CollapsibleContent>
+        <SignedIn>
+          <SidebarMenu>
+            {sidebarLinks.map((link) => (
+              <SidebarMenuItem key={link.name}>
+                <SidebarMenuButton asChild>
+                  <Link href={link.url}>
+                    <link.icon />
+                    <span className="text-white font-mono">{link.name}</span>
+                  </Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
-            </Collapsible>
-        </SidebarMenu>
+            ))}
+          </SidebarMenu>
+          <SidebarMenu>
+            <Collapsible defaultOpen={false} className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton>
+                      <FolderCode />
+                      <span className="text-white font-mono">Projects</span>
+                      <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"/>
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {sampleProjects.map((project) => (
+                        <SidebarMenuSubItem key={project.name}>
+                          <SidebarMenuButton asChild>
+                            <Link href={project.url}>
+                              <span className="text-white font-mono">{project.name}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+          </SidebarMenu>
+        </SignedIn>
+        <SignedOut>
+        <div className="w-full h-full px-5 flex flex-col justify-center items-center gap-y-5">
+          <p className="text-xl">Sign in to access user features</p>
+          <SignInButton />
+        </div>
+        </SignedOut>
       </SidebarContent>
     </Sidebar>
   )

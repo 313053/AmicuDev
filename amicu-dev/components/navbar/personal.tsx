@@ -7,17 +7,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Bug, FolderCode, LogOut, Mail, Settings, User, Users } from "lucide-react";
+import UserAvatar from "../user_avatar/user-avatar";
+import { SignOutButton } from "@clerk/nextjs";
 
   export function Personal() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Avatar>
-                    <AvatarImage  />
-                    <AvatarFallback><User/></AvatarFallback>
-                </Avatar>
+                <UserAvatar />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -53,10 +51,12 @@ import { Bug, FolderCode, LogOut, Mail, Settings, User, Users } from "lucide-rea
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <LogOut />
-                        <span>Log Out</span>
-                    </DropdownMenuItem>
+                    <SignOutButton>
+                        <DropdownMenuItem>
+                            <LogOut />
+                            <span>Log Out</span>
+                        </DropdownMenuItem>
+                    </SignOutButton>
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>

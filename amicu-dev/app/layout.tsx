@@ -7,10 +7,6 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { ThemeProvider } from "@/components/theme_provider/theme-provider";
 import {
   ClerkProvider,
-  //SignInButton,
-  //SignedIn,
-  //SignedOut,
-  //UserButton
 } from '@clerk/nextjs'
 
 const geistSans = localFont({
@@ -46,9 +42,9 @@ export default function RootLayout({
           >
             <SidebarProvider defaultOpen={false}>
               <SidebarInset>
-              <div className="w-full">
+              <div className="w-full flex flex-col min-h-screen">
                 <Navbar />
-                <main className="mx-4">{children}</main>
+                <main className="mx-4 mt-20">{children}</main>
               </div>    
               <AppSidebar />
               </SidebarInset>

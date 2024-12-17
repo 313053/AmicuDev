@@ -3,6 +3,9 @@ import { Searchbar } from "./searchbar";
 import { Notifications } from "./notifications";
 import { ModeToggle } from "../theme_provider/theme-toggle";
 import { Personal } from "./personal";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import SignInButton from "./sign-in-button";
+import SignUpButton from "./sign-up-button";
 
 
 function Navbar() {
@@ -17,8 +20,14 @@ function Navbar() {
                     <Searchbar />
                 </div>
                 <div className="flex items-center gap-4">
-                    <Notifications />
-                    <Personal />
+                    <SignedIn>
+                        <Notifications />
+                        <Personal />
+                    </SignedIn>
+                    <SignedOut>
+                        <SignInButton />
+                        <SignUpButton />
+                    </SignedOut>
                     <ModeToggle />
                 </div>
             </div>
