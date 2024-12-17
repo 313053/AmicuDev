@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme_provider/theme-provider";
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
+import Footer from "@/components/footer/footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -44,7 +45,8 @@ export default function RootLayout({
               <SidebarInset>
               <div className="w-full flex flex-col min-h-screen">
                 <Navbar />
-                <main className="mx-4 mt-20">{children}</main>
+                <main className="mx-4 mt-20 flex-grow">{children}</main>
+                <Footer />
               </div>    
               <AppSidebar />
               </SidebarInset>

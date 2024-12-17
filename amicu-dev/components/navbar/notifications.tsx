@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 export function Notifications() {
     return (
-       <Button type="button" variant="navbar" className="px-2.5">
+       <Button type="button" variant="navbar" className="px-2.5 hidden sm:block">
             <Bell />
        </Button> 
     );

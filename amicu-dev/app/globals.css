@@ -31,6 +31,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --subtext: 222.2 1.4% 35%;
+    --button: 318 30% 32%;
     --radius: 0.5rem
   ;
     --sidebar-background: 318 30% 40%;
@@ -71,6 +72,7 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --subtext: 222.2 1.4% 70%;
+    --button: 210 40% 98%;
   ;
     --sidebar-background: 318 30% 35%;
     --sidebar-foreground: 240 4.8% 95.9%;

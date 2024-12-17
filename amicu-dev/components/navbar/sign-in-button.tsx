@@ -2,13 +2,18 @@
 
 import { useClerk } from "@clerk/nextjs";
 import { Button } from "../ui/button";
+import clsx from "clsx";
 
 
-export default function SignInButton () {
+export default function SignInButton ({ className = ""}) {
     const { redirectToSignIn } = useClerk();
 
     return(
-            <Button className="w-20" variant="navbar" onClick={() => redirectToSignIn()}>
+            <Button 
+                className={clsx("w-20", className)}
+                variant="navbar" 
+                onClick={() => redirectToSignIn()}
+            >
                 Sign In
             </Button>
     );

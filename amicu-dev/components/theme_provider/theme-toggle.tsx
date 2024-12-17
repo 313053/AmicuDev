@@ -15,6 +15,7 @@ export function ModeToggle() {
   const { setTheme } = useTheme()
 
   return (
+    <div className="hidden md:block">
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="navbar" size="icon">
@@ -35,5 +36,6 @@ export function ModeToggle() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+    </div>
   )
 }
