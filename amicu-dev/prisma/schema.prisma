@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model conversation {
+  id                                                             BigInt              @id @unique @default(autoincrement())
+  created_at                                                     DateTime            @default(now()) @db.Timestamptz(6)
+  message_message_conversationToconversation                     message[]           @relation("message_conversationToconversation")
+  project_project_conversationToconversation                     project[]           @relation("project_conversationToconversation")
+  user_conversation_user_conversation_conversationToconversation user_conversation[] @relation("user_conversation_conversationToconversation")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model message {
+  id                                              BigInt        @id @unique @default(autoincrement())
+  created_at                                      DateTime      @default(now()) @db.Timestamptz(6)
+  contents                                        String?       @default("")
+  sender                                          BigInt?
+  conversation                                    BigInt?
+  conversation_message_conversationToconversation conversation? @relation("message_conversationToconversation", fields: [conversation], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user                                            user?         @relation(fields: [sender], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model project {
+  id                                              BigInt         @id @unique @default(autoincrement())
+  created_at                                      DateTime       @default(now()) @db.Timestamptz(6)
+  description                                     String?        @default("")
+  title                                           String?        @default("")
+  thumbnail                                       String?        @default("")
+  conversation                                    BigInt?
+  creator                                         BigInt?
+  github                                          String?
+  conversation_project_conversationToconversation conversation?  @relation("project_conversationToconversation", fields: [conversation], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user                                            user?          @relation(fields: [creator], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_project_user_project_projectToproject      user_project[] @relation("user_project_projectToproject")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model tag {
+  id                         BigInt     @id @unique @default(autoincrement())
+  name                       String?    @default("")
+  complexity                 BigInt?
+  user_tag_user_tag_tagTotag user_tag[] @relation("user_tag_tagTotag")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user {
+  id                                             BigInt              @id @unique @default(autoincrement())
+  created_at                                     DateTime            @default(now()) @db.Timestamptz(6)
+  user_id                                        String?             @unique @default(dbgenerated("requesting_user_id()"))
+  message                                        message[]
+  project                                        project[]
+  user_conversation_user_conversation_userTouser user_conversation[] @relation("user_conversation_userTouser")
+  user_project_user_project_userTouser           user_project[]      @relation("user_project_userTouser")
+  user_tag_user_tag_userTouser                   user_tag[]          @relation("user_tag_userTouser")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_conversation {
+  id                                                        BigInt        @id @unique @default(autoincrement())
+  created_at                                                DateTime      @default(now()) @db.Timestamptz(6)
+  user                                                      BigInt?
+  conversation                                              BigInt?
+  conversation_user_conversation_conversationToconversation conversation? @relation("user_conversation_conversationToconversation", fields: [conversation], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_user_conversation_userTouser                         user?         @relation("user_conversation_userTouser", fields: [user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_project {
+  id                                    BigInt   @id @unique @default(autoincrement())
+  created_at                            DateTime @default(now()) @db.Timestamptz(6)
+  user                                  BigInt?
+  project                               BigInt?
+  project_user_project_projectToproject project? @relation("user_project_projectToproject", fields: [project], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_user_project_userTouser          user?    @relation("user_project_userTouser", fields: [user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_tag {
+  id                       BigInt   @id @unique @default(autoincrement())
+  created_at               DateTime @default(now()) @db.Timestamptz(6)
+  user                     BigInt?
+  tag                      BigInt?
+  tag_user_tag_tagTotag    tag?     @relation("user_tag_tagTotag", fields: [tag], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_user_tag_userTouser user?    @relation("user_tag_userTouser", fields: [user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
