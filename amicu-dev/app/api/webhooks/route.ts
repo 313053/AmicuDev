@@ -1,7 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import CreateClerkSupabaseClient from '@/lib/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
   if (evt.type == 'user.created' || 'user.updated') {
     
-    const client = CreateClerkSupabaseClient();
+    const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!);
 
     const { error } = await client
         .from('user')
