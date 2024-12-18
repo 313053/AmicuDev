@@ -1,3 +1,5 @@
+'use client'
+
 import { useSession} from '@clerk/nextjs'
 import { createClient } from '@supabase/supabase-js'
 
