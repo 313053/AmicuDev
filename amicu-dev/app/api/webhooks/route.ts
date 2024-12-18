@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
   if (evt.type == 'user.created' || 'user.updated') {
     
-    const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!);
+    const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
     const { error } = await client
         .from('user')
