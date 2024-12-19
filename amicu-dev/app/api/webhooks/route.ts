@@ -57,10 +57,22 @@ export async function POST(req: Request) {
     
     if (error) {
         console.error('Error inserting user:', error)
-        return new Response('Error: Count not insert user', { status: 500})
+        return new Response('Error: Could not insert user', { status: 500 })
     }
-    else {
-        console.log("It worked lol")
+  }
+  
+  if (evt.type === 'user.deleted') {
+
+    const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!);
+
+    const { error } = await client
+        .from('user')
+        .delete()
+        .eq('user_id', evt.data.id);
+    
+    if (error) {
+        console.error('Error deleting user:', error)
+        return new Response('Error: Could not delete user', { status: 500 })
     }
   }
   
