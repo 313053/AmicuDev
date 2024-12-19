@@ -45,7 +45,7 @@ export default function RootLayout({
               <SidebarInset>
               <div className="w-full flex flex-col min-h-screen">
                 <Navbar />
-                <main className="mx-4 mt-20 flex-grow">{children}</main>
+                <main className="mx-4 mt-40 flex-grow">{children}</main>
                 <Footer />
               </div>    
               <AppSidebar />

@@ -1,12 +1,12 @@
-type NavLink = {
-    href: string;
-    label: string;
-};
+'use client'
 
-export const links: NavLink[] = [
-    { href: '/', label: 'home'},
-    { href: '/account', label: 'account'},
-    { href: '/contact', label: 'contact'},
-    { href: '/search', label: 'search'},
-];
+import { useUser } from "@clerk/nextjs"
 
+export function GetAccountLink() {
+    const { user } = useUser();
+
+    return user ? 
+        `/account/${user?.id}`
+        :
+        '/'
+}

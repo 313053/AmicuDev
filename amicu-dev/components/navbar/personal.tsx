@@ -1,3 +1,5 @@
+'use client'
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,6 +12,8 @@ import {
 import { Bug, FolderCode, LogOut, Mail, Settings, User, Users } from "lucide-react";
 import UserAvatar from "../user_avatar/user-avatar";
 import { SignOutButton } from "@clerk/nextjs";
+import { GetAccountLink } from "@/lib/links";
+import Link from "next/link";
 
   export function Personal() {
     return (
@@ -21,10 +25,12 @@ import { SignOutButton } from "@clerk/nextjs";
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
+                    <Link href={GetAccountLink()}>
                     <DropdownMenuItem>
                         <User />
                         <span>My Profile</span>
                     </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem>
                         <Mail />
                         <span>My Messages</span>
