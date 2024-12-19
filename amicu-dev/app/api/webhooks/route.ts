@@ -48,9 +48,6 @@ export async function POST(req: Request) {
 
 
   const { id } = evt.data
-  const eventType = evt.type
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`)
-  console.log('Webhook payload:', body)
 
   if (evt.type == 'user.created' || 'user.updated') {
     
@@ -58,7 +55,7 @@ export async function POST(req: Request) {
 
     const { error } = await client
         .from('user')
-        .insert([]);
+        .insert([{user_id: id}]);
     
     if (error) {
         console.error('Error inserting user:', error)
