@@ -61,6 +61,9 @@ export async function POST(req: Request) {
         console.error('Error inserting user:', error)
         return new Response('Error: Count not insert user', { status: 500})
     }
+    else {
+        console.log("It worked lol")
+    }
   }
   
   return new Response('Webhook received', { status: 200 })
