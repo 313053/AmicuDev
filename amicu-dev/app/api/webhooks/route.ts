@@ -46,7 +46,8 @@ export async function POST(req: Request) {
     })
   }
 
-  if (evt.type == 'user.created' || 'user.updated') {
+
+  if (evt.type === 'user.created') {
     
     const client = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!);
 
