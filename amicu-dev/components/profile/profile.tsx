@@ -10,7 +10,7 @@ import UserBio from "./bio"
 
 interface UserData {
     username: string
-    primaryEmailAddress: { emailAddress: string }
+    emailAddress: string
     firstName: string
     lastName: string
     imageUrl: string
@@ -45,7 +45,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
                 const data = await response.json()
                 const userData: UserData = {
                     username: data.clerkData.username,
-                    primaryEmailAddress: data.clerkData.primaryEmailAddress,
+                    emailAddress: data.clerkData.emailAddresses[0].emailAddress,
                     firstName: data.clerkData.firstName,
                     lastName: data.clerkData.lastName,
                     imageUrl: data.clerkData.imageUrl,
@@ -117,15 +117,18 @@ export default function ProfileCard({ userId } : {userId : string}) {
 
     const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
     
+
     return(
         <Card className="w-5/6 sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10">
-            <CardHeader className="flex flex-col items-center border-b w-3/4 pb-4 mb-4">
-                <Avatar className="border-2 border-subtext h-16 w-16">
+            <CardHeader className="flex flex-col md:flex-row items-center md:justify-evenly border-b w-3/4 pb-4 mb-4">
+                <Avatar className="border-2 border-subtext h-16 w-16 sm:h-24 sm:w-24 md:h-28 md:w-28">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
                     <AvatarFallback><User /></AvatarFallback>
                 </Avatar>
-                <CardTitle className="text-xl">{user?.username}</CardTitle>
-                <CardDescription>{user?.primaryEmailAddress?.emailAddress}</CardDescription> 
+                <div className="flex flex-col items-center md:items-start">
+                    <CardTitle className="text-xl font-bold uppercase">{user?.username}</CardTitle>
+                    <CardDescription className="italic">{user?.emailAddress}</CardDescription> 
+                </div>
             </CardHeader>
             <CardContent className="w-5/6 sm:w-3/4 h-auto flex flex-col items-center space-y-5">
                 <div className="flex flex-row justify-center w-full space-x-4">
