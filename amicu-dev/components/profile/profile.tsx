@@ -7,24 +7,20 @@ import { User } from "lucide-react"
 import { Button } from "../ui/button"
 import { Skeleton } from "../ui/skeleton"
 import { useEffect, useState } from "react"
+import UserBio from "./bio"
 
 interface UserData {
-    id: string
-    username?: string
-    email?: string
-    primaryEmailAddress?: { emailAddress: string }
-    firstName?: string
-    lastName?: string
-    imageUrl?: string
-    createdAt?: string
-    about?: string
+    username: string
+    primaryEmailAddress: { emailAddress: string }
+    firstName: string
+    lastName: string
+    imageUrl: string
+    createdAt: string
+    bio: string
   }
 
-  interface ProfileCardProps { 
-    userId: string
-  }
 
-export default function ProfileCard({ userId } : ProfileCardProps) {
+export default function ProfileCard({ userId } : {userId : string}) {
     
     const [ user, setUser ] = useState<UserData | null>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
@@ -47,7 +43,16 @@ export default function ProfileCard({ userId } : ProfileCardProps) {
                     throw new Error(`Failed to fetch user data: ${response.status}`)
                 }
 
-                const userData: UserData = await response.json()
+                const data = await response.json()
+                const userData: UserData = {
+                    username: data.clerkData.username,
+                    primaryEmailAddress: data.clerkData.primaryEmailAddress,
+                    firstName: data.clerkData.firstName,
+                    lastName: data.clerkData.lastName,
+                    imageUrl: data.clerkData.imageUrl,
+                    createdAt: data.clerkData.createdAt,
+                    bio: data.bio ?? "",
+                  }
                 setUser(userData)
                 setIsLoading(false)
             } catch (err) {
@@ -62,15 +67,16 @@ export default function ProfileCard({ userId } : ProfileCardProps) {
 
     if (isLoading){
         return(
-            <div className="flex flex-col items-center w-[640px] h-[450px] border rounded-xl bg-card pt-6">
-                <Skeleton className="w-12 h-12 rounded-full" />
-                <div className="space-y-6 my-6 w-full flex flex-col items-center">
-                    <Skeleton className="h-6 w-3/4" />
-                    <Skeleton className="h-6 w-3/4" />
-                    <Skeleton className="h-6 w-3/4" />
-                    <Skeleton className="h-[150px] w-3/4" />
-                </div>
-            </div>
+            <Card className="w-full sm:w-[640px] flex flex-col items-center">
+                <CardContent className="flex flex-col items-center w-3/4 pt-6">
+                    <Skeleton className="w-14 h-14 rounded-full" />
+                    <div className="space-y-6 my-6 w-full flex flex-col items-center">
+                        <Skeleton className="h-6 w-1/3" />
+                        <Skeleton className="h-6 w-full" />
+                        <Skeleton className="h-[250px] w-full" />
+                    </div>
+                </CardContent>
+            </Card>
         )
     }
 
@@ -91,10 +97,10 @@ export default function ProfileCard({ userId } : ProfileCardProps) {
     : 
     "Unknown registration date";
 
-    const isCurrentUser = isAuthLoaded && currentUser && currentUser.id === userId;
+    const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
     
     return(
-        <Card className="sm:w-[640px] flex flex-col items-center">
+        <Card className="w-5/6 sm:w-[520px] md:w-[640px] h-full flex flex-col items-center pb-10">
             <CardHeader className="flex flex-col items-center border-b w-3/4 pb-4 mb-4">
                 <Avatar className="border-2 border-subtext h-14 w-14">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
@@ -106,7 +112,7 @@ export default function ProfileCard({ userId } : ProfileCardProps) {
                     <Button type="button" variant="default">Edit Profile</Button>
                 )}  
             </CardHeader>
-            <CardContent className="w-3/4 flex flex-col items-center space-y-6">
+            <CardContent className="w-5/6 sm:w-3/4 h-auto flex flex-col items-center space-y-5">
                 <div className="flex flex-row justify-center w-full space-x-4">
                     <div className="flex flex-col items-center w-1/2">
                         <span className="w-full h-full text-center font-semibold">{user?.firstName} {user?.lastName}</span>
@@ -115,10 +121,12 @@ export default function ProfileCard({ userId } : ProfileCardProps) {
                         <span className="w-full h-full text-center font-semibold">User since {registrationDate}</span>
                     </div>
                 </div>
-                <div className="w-full border rounded-xl p-4">
-                <p className="font-bold pb-2">About</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
+                <UserBio
+                    content={user?.bio || ""}
+                    editable={isCurrentUser || false}
+                    onSave={() => console.log("saved")}>
+                </UserBio>
+                <div className="h-6"></div>
             </CardContent>
         </Card>
 

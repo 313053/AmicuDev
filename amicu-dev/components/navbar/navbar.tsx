@@ -7,6 +7,7 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 import SignInButton from "./sign-in-button";
 import SignUpButton from "./sign-up-button";
 import Image from "next/image";
+import Link from "next/link";
 
 
 function Navbar() {
@@ -15,7 +16,9 @@ function Navbar() {
             <div className='w-full flex flex-row gap-y-5 gap-x-14 sm:justify-between sm:items-center sm:gap-x-20 py-3 items-center'>
                 <div className="flex items-center">
                     <SidebarTrigger />
-                    <span className="text-white text-2xl font-mono font-semibold hidden sm:block">AmicuDev</span>
+                    <Link href="/">
+                        <span className="text-white text-2xl font-mono font-semibold hidden sm:block">AmicuDev</span>
+                    </Link>
                     <Image 
                         src="/favicon.ico"
                         alt="AmicuDev"

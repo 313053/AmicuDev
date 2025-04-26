@@ -16,7 +16,8 @@ export default {
 			button: 'hsl(var(--button))',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
+  				foreground: 'hsl(var(--card-foreground))',
+				textArea: 'hsl(var(--card-textArea))'
   			},
   			popover: {
   				DEFAULT: 'hsl(var(--popover))',
