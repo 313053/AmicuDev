@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { X } from "lucide-react";
+import { SquarePen, X } from "lucide-react";
 
 interface BioProps {
     content : string;
@@ -51,7 +51,12 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
                     <p className="italic text-muted-foreground">This user has yet to tell us something about themselves</p>
                 )
             ) : (
-                <p>{content}</p>
+                <div>
+                    <p>{draftBio}</p>
+                    {editable && (
+                        <SquarePen className="absolute top-[18px] left-[68px] h-5 w-5" onClick={ () => setEditing(true)}/>
+                    )}
+                </div>
             )}
         </div>
     )

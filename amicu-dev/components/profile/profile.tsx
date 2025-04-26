@@ -90,6 +90,25 @@ export default function ProfileCard({ userId } : {userId : string}) {
         )
     }
 
+    async function handleBioChange(newbio: string) {
+        try {
+            const res = await fetch("/api/set-bio",{
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({ bio: newbio}),
+            });
+            
+            if (!res.ok) {
+                throw new Error("Failed to update bio");
+            }
+
+            console.log("Bio updated succesfully");
+        }   catch (err) {
+            console.error(err);
+        }
+    }
 
     const registrationDate = user?.createdAt? 
     new Date(user.createdAt).toLocaleDateString() 
@@ -99,9 +118,9 @@ export default function ProfileCard({ userId } : {userId : string}) {
     const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
     
     return(
-        <Card className="w-5/6 sm:w-[520px] md:w-[640px] h-full flex flex-col items-center pb-10">
+        <Card className="w-5/6 sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10">
             <CardHeader className="flex flex-col items-center border-b w-3/4 pb-4 mb-4">
-                <Avatar className="border-2 border-subtext h-14 w-14">
+                <Avatar className="border-2 border-subtext h-16 w-16">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
                     <AvatarFallback><User /></AvatarFallback>
                 </Avatar>
@@ -120,7 +139,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
                 <UserBio
                     content={user?.bio || ""}
                     editable={isCurrentUser || false}
-                    onSave={() => console.log("saved")}>
+                    onSave={handleBioChange}>
                 </UserBio>
                 <div className="h-6"></div>
             </CardContent>
