@@ -107,10 +107,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
                     <AvatarFallback><User /></AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-xl">{user?.username}</CardTitle>
-                <CardDescription>{user?.primaryEmailAddress?.emailAddress}</CardDescription>
-                {isCurrentUser && (
-                    <Button type="button" variant="default">Edit Profile</Button>
-                )}  
+                <CardDescription>{user?.primaryEmailAddress?.emailAddress}</CardDescription> 
             </CardHeader>
             <CardContent className="w-5/6 sm:w-3/4 h-auto flex flex-col items-center space-y-5">
                 <div className="flex flex-row justify-center w-full space-x-4">

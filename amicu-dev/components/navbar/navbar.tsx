@@ -19,13 +19,15 @@ function Navbar() {
                     <Link href="/">
                         <span className="text-white text-2xl font-mono font-semibold hidden sm:block">AmicuDev</span>
                     </Link>
-                    <Image 
-                        src="/favicon.ico"
-                        alt="AmicuDev"
-                        width={50}
-                        height={50}
-                        className="sm:hidden"
-                    />
+                    <Link href="/">
+                        <Image 
+                            src="/favicon.ico"
+                            alt="AmicuDev"
+                            width={50}
+                            height={50}
+                            className="sm:hidden"
+                        />
+                    </Link>
                 </div>
                 <div>
                     <Searchbar />
