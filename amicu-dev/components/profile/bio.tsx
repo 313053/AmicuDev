@@ -25,7 +25,7 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
     }
 
     return(
-        <div className="relative w-full sm:h-72 h-full rounded-md p-4 bg-card-textArea ">
+        <div className="relative w-full md:h-72 h-full rounded-md p-4 bg-card-textArea ">
             <p className="font-bold pb-2">About</p>
             { editing ? (
                 <div className="space-y-5 h-full pb-8">
@@ -54,7 +54,7 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
                 <div>
                     <p>{draftBio}</p>
                     {editable && (
-                        <SquarePen className="absolute top-[18px] left-[68px] h-5 w-5" onClick={ () => setEditing(true)}/>
+                        <SquarePen className="absolute top-[18px] left-[68px] h-5 w-5 hover:scale-110 hover:text-subtext" onClick={ () => setEditing(true)}/>
                     )}
                 </div>
             )}

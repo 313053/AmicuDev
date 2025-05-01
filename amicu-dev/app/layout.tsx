@@ -9,6 +9,7 @@ import {
   ClerkProvider,
 } from '@clerk/nextjs'
 import Footer from "@/components/footer/footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,6 +47,7 @@ export default function RootLayout({
               <div className="w-full flex flex-col min-h-screen">
                 <Navbar />
                 <main className="mx-4 my-40 flex-grow">{children}</main>
+                <Toaster richColors />
                 <Footer />
               </div>    
               <AppSidebar />

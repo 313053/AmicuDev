@@ -1,12 +1,16 @@
+'use client'
+
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubItem, SidebarTrigger } from "@/components/ui/sidebar"
 import { sampleProjects, sidebarLinks } from "@/lib/sidebarUtils"
 import Link from "next/link"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
-import { ChevronRight, FolderCode } from "lucide-react"
+import { ChevronRight, FolderCode, Moon, Sun } from "lucide-react"
 import { SignedIn, SignedOut } from "@clerk/nextjs"
 import SignInButton from "../navbar/sign-in-button"
+import { useTheme } from "next-themes"
 
 export function AppSidebar() {
+  const { theme, setTheme } = useTheme();
   return (
     <Sidebar variant="inset">
       <SidebarHeader className="pt-3">
@@ -30,6 +34,17 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={() => (theme === "light") ? setTheme("dark") : setTheme("light")}>
+                <div>
+                  {theme === 'dark' 
+                  ? <Moon /> 
+                  : <Sun />
+                  }
+                  <span className="text-white font-mono">Theme</span>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
           <SidebarMenu>
             <Collapsible defaultOpen={false} className="group/collapsible">

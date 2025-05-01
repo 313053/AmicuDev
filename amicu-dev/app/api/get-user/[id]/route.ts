@@ -19,12 +19,17 @@ export async function GET(
     // user data to the one pulled from clerk
     const userBio = await prisma.user.findUnique({
       where : { user_id: userId },
-      select: { bio: true },
+      select : { 
+        bio: true,
+        links: true
+      },
     })
+
 
     const combinedData = {
       clerkData: user,
       bio: userBio?.bio || null,
+      links: userBio?.links || null
     }
 
     return new Response(JSON.stringify(combinedData), { status: 200 })

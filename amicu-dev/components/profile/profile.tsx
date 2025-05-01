@@ -7,20 +7,13 @@ import { User } from "lucide-react"
 import { Skeleton } from "../ui/skeleton"
 import { useEffect, useState } from "react"
 import UserBio from "./bio"
+import { UserData, UserLink } from "@/lib/types/profileTypes"
+import UserLinks from "./links"
 
-interface UserData {
-    username: string
-    emailAddress: string
-    firstName: string
-    lastName: string
-    imageUrl: string
-    createdAt: string
-    bio: string
-  }
+
 
 
 export default function ProfileCard({ userId } : {userId : string}) {
-    
     const [ user, setUser ] = useState<UserData | null>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ error, setError ] = useState<string | null>(null)
@@ -51,6 +44,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
                     imageUrl: data.clerkData.imageUrl,
                     createdAt: data.clerkData.createdAt,
                     bio: data.bio ?? "",
+                    links: data.links, 
                   }
                 setUser(userData)
                 setIsLoading(false)
@@ -62,6 +56,49 @@ export default function ProfileCard({ userId } : {userId : string}) {
         }
         fetchUserData()
     }, [userId])
+    
+    async function handleBioChange(newbio: string) {
+        try {
+            const res = await fetch("/api/set-bio",{
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({ bio: newbio}),
+            });
+            
+            if (!res.ok) {
+                throw new Error("Failed to update bio");
+            }
+        }   catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function handleLinksChange(newLinks: UserLink[]) {
+        try {
+            const res = await fetch("/api/set-links",{
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({ links: newLinks}),
+            });
+            
+            if (!res.ok) {
+                throw new Error("Failed to update links");
+            }
+        }   catch (err) {
+            console.error(err);
+        }
+    }
+
+    const registrationDate = user?.createdAt? 
+    new Date(user.createdAt).toLocaleDateString() 
+    : 
+    "Unknown registration date";
+
+    const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
     
 
     if (isLoading){
@@ -90,34 +127,6 @@ export default function ProfileCard({ userId } : {userId : string}) {
         )
     }
 
-    async function handleBioChange(newbio: string) {
-        try {
-            const res = await fetch("/api/set-bio",{
-                method: "POST",
-                headers: {
-                    "Content-Type" : "application/json",
-                },
-                body: JSON.stringify({ bio: newbio}),
-            });
-            
-            if (!res.ok) {
-                throw new Error("Failed to update bio");
-            }
-
-            console.log("Bio updated succesfully");
-        }   catch (err) {
-            console.error(err);
-        }
-    }
-
-    const registrationDate = user?.createdAt? 
-    new Date(user.createdAt).toLocaleDateString() 
-    : 
-    "Unknown registration date";
-
-    const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
-    
-
     return(
         <Card className="w-5/6 sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10">
             <CardHeader className="flex flex-col md:flex-row items-center md:justify-evenly border-b w-3/4 pb-4 mb-4">
@@ -128,10 +137,15 @@ export default function ProfileCard({ userId } : {userId : string}) {
                 <div className="flex flex-col items-center md:items-start">
                     <CardTitle className="text-xl font-bold uppercase">{user?.username}</CardTitle>
                     <CardDescription className="italic">{user?.emailAddress}</CardDescription> 
+                    <UserLinks
+                        content={user?.links || null}
+                        editable={isCurrentUser || false}
+                        onSave={handleLinksChange}    
+                    />
                 </div>
             </CardHeader>
-            <CardContent className="w-5/6 sm:w-3/4 h-auto flex flex-col items-center space-y-5">
-                <div className="flex flex-row justify-center w-full space-x-4">
+            <CardContent className="w-full sm:w-5/6 md:w-3/4 h-auto flex flex-col items-center space-y-5">
+                <div className="flex flex-row items-center justify-evenly w-full space-x-4">
                     <div className="flex flex-col items-center w-1/2">
                         <span className="w-full h-full text-center font-semibold">{user?.firstName} {user?.lastName}</span>
                     </div>
@@ -142,8 +156,8 @@ export default function ProfileCard({ userId } : {userId : string}) {
                 <UserBio
                     content={user?.bio || ""}
                     editable={isCurrentUser || false}
-                    onSave={handleBioChange}>
-                </UserBio>
+                    onSave={handleBioChange}
+                />
                 <div className="h-6"></div>
             </CardContent>
         </Card>
