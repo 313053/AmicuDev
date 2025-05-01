@@ -35,6 +35,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'udemy.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'facebook.com',
+      },
     ],
   },
 };

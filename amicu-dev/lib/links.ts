@@ -17,6 +17,7 @@ export const allowedIcons : string[] = [
     'github.com',
     'linkedin.com',
     'pinterest.com',
+    'facebook.com',
     'x.com',
     'threads.com',
     'youtube.com',

@@ -38,7 +38,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
 
     // list of favicons to represent user links with
     // placeholders for unsupported hostnames
-    const linkIcons : string[] = content?.map(link => (
+    const linkIcons : string[] = displayedLinks?.map(link => (
         allowedIcons.includes(link.name.toLowerCase())
             ? `https://${link.name.toLowerCase()}/favicon.ico`
             : '/globe.svg'
@@ -67,7 +67,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
             {displayedLinks?.map((link, index) => (
                 <a key={index} href={link.url} title={new URL(link.url).hostname} target="_blank" rel="noopener noreferrer">
                     <Image 
-                        src={linkIcons[index]} 
+                        src={linkIcons[index] || '/globe.svg'} 
                         alt="" 
                         width={24} 
                         height={24} 
@@ -125,9 +125,10 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
                 toast.error("Please input a valid link!")
                 return
             }
-            if(draftLink.name !== new URL(draftLink.url).hostname){
+            if(draftLink.name !== `${new URL(draftLink.url).hostname.replace(/^www\./, '')}`){
                 setErrorState(true)
                 toast.error("Make sure the domain matches the link!")
+                console.log(draftLink.name + new URL(draftLink.url).hostname)
                 return
             }
             setDraftLinks(prev => {
