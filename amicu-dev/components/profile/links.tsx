@@ -40,7 +40,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
     // placeholders for unsupported hostnames
     const linkIcons : string[] = content?.map(link => (
         allowedIcons.includes(link.name.toLowerCase())
-            ? `https://${link.name}/favicon.ico`
+            ? `https://${link.name.toLowerCase()}/favicon.ico`
             : '/globe.svg'
     )) || []; 
 
