@@ -9,14 +9,18 @@ import { useEffect, useState } from "react"
 import UserBio from "./bio"
 import { UserData, UserLink } from "@/lib/types/profileTypes"
 import UserLinks from "./links"
+import UserTags from "./tags"
+import { TagData } from "@/lib/types/tagTypes"
 
 
 
 
 export default function ProfileCard({ userId } : {userId : string}) {
     const [ user, setUser ] = useState<UserData | null>(null);
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
-    const [ error, setError ] = useState<string | null>(null)
+    const [ userTags, setUserTags ] = useState<TagData[] | null>(null);
+    const [ isLoadingMain, setIsLoadingMain ] = useState(true);
+    const [ isLoadingTags, setIsLoadingTags ] = useState(true);
+    const [ error, setError ] = useState<string | null>(null);
 
     const { user: currentUser, isLoaded: isAuthLoaded } = useUser()
 
@@ -24,19 +28,20 @@ export default function ProfileCard({ userId } : {userId : string}) {
         const fetchUserData = async () => {
             if (!userId) {
                 setError("User ID is required!");
-                setIsLoading(false);
+                setIsLoadingMain(false);
                 return;
             }
             try {
-                setIsLoading(true)
-                const response = await fetch(`/api/get-user/${userId}`)
+                setIsLoadingMain(true);
+                const response = await fetch(`/api/get-user/${userId}`);
 
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch user data: ${response.status}`)
+                    throw new Error(`Failed to fetch user data: ${response.status}`);
                 }
 
-                const data = await response.json()
+                const data = await response.json();
                 const userData: UserData = {
+                    id : BigInt(data.id),
                     username: data.clerkData.username,
                     emailAddress: data.clerkData.emailAddresses[0].emailAddress,
                     firstName: data.clerkData.firstName,
@@ -46,16 +51,46 @@ export default function ProfileCard({ userId } : {userId : string}) {
                     bio: data.bio ?? "",
                     links: data.links, 
                   }
-                setUser(userData)
-                setIsLoading(false)
+                setUser(userData);
+                setIsLoadingMain(false);
             } catch (err) {
-                console.error("Error fetching user data:", err)
-                setError(err instanceof Error ? err.message : "Unknown error occured")
-                setIsLoading(false)
+                console.error("Error fetching user data:", err);
+                setError(err instanceof Error ? err.message : "Unknown error occured");
+                setIsLoadingMain(false);
             }
         }
-        fetchUserData()
-    }, [userId])
+        fetchUserData();
+    }, [userId]);
+
+    useEffect(() => {
+        const fetchUserTagData = async () => {
+            if (!user) {
+                return;
+            }
+            try {
+                setIsLoadingTags(true);
+                const response = await fetch(`/api/get-user-tags/${user.id}`);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch tag data: ${response.status}`)
+                }
+
+                const data = await response.json()
+                const tagData : TagData[] = data.map((item: TagData) => ({
+                    name: item.name,
+                    complexity: item.complexity
+                }));
+                setUserTags(tagData);
+                setIsLoadingTags(false);
+                console.log(tagData)
+            } catch (err) {
+                console.error("Error fetching user tag data: ", err);
+                setError(err instanceof Error ? err.message : "Unknown error occured");
+                setIsLoadingTags(false);
+            }
+        }
+        fetchUserTagData();
+    }, [user]);
     
     async function handleBioChange(newbio: string) {
         try {
@@ -101,7 +136,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
     const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
     
 
-    if (isLoading){
+    if (isLoadingMain){
         return(
             <Card className="w-full sm:w-[640px] flex flex-col items-center">
                 <CardContent className="flex flex-col items-center w-3/4 pt-6">
@@ -128,7 +163,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
     }
 
     return(
-        <Card className="w-5/6 sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10">
+        <Card className="w-full sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10">
             <CardHeader className="flex flex-col md:flex-row items-center md:justify-evenly border-b w-3/4 pb-4 mb-4">
                 <Avatar className="border-2 border-subtext h-16 w-16 sm:h-24 sm:w-24 md:h-28 md:w-28">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
@@ -158,7 +193,13 @@ export default function ProfileCard({ userId } : {userId : string}) {
                     editable={isCurrentUser || false}
                     onSave={handleBioChange}
                 />
-                <div className="h-6"></div>
+                <div className="h-2"></div>
+                <p className="text-xl sm:text-2xl font-semibold w-full text-left">Skills</p>
+                <UserTags 
+                    content={userTags || []}
+                    editable={isCurrentUser || false}
+                    onSave={console.log("tags saved")}    
+                />
             </CardContent>
         </Card>
 

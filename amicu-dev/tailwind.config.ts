@@ -7,6 +7,12 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    'ring-yellow-700',
+    'ring-zinc-300',
+    'ring-yellow-300',
+    'ring-cyan-400',
+  ],
   theme: {
   	extend: {
   		colors: {

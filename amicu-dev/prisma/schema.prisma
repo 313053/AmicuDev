@@ -46,7 +46,7 @@ model project {
 model tag {
   id                         BigInt     @id @unique @default(autoincrement())
   name                       String?    @default("")
-  complexity                 BigInt?
+  complexity                 Int?
   user_tag_user_tag_tagTotag user_tag[] @relation("user_tag_tagTotag")
 }
 

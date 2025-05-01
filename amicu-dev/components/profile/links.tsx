@@ -28,7 +28,6 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
     const handleSave = async () => {
         if(draftLinks) {
             const cleanedLinks = removeEmptyLinks();
-            console.log(cleanedLinks);
             if(cleanedLinks !== content)
                 await onSave(cleanedLinks);
             setDisplayedLinks(cleanedLinks)
@@ -125,10 +124,9 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
                 toast.error("Please input a valid link!")
                 return
             }
-            if(draftLink.name !== `${new URL(draftLink.url).hostname.replace(/^www\./, '')}`){
+            if(draftLink.name !== `${new URL(draftLink.url).hostname.replace(/^www\./, '')}` && draftLink.name !== "other"){
                 setErrorState(true)
                 toast.error("Make sure the domain matches the link!")
-                console.log(draftLink.name + new URL(draftLink.url).hostname)
                 return
             }
             setDraftLinks(prev => {

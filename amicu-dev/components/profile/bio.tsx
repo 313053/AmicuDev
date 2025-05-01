@@ -10,12 +10,13 @@ interface BioProps {
 }
 
 export default function UserBio( {content, editable, onSave} : BioProps ){
-    const noBio = (content.trim() === "");
+    const [noBio, setNoBio] = useState(content.trim() === "");
     const [editing, setEditing] = useState(false);
     const [draftBio, setDraftBio] = useState(content);
 
     const handleSave = async () => {
         await onSave(draftBio);
+        setNoBio(draftBio.trim() === "")
         setEditing(false);
     }
 
@@ -25,7 +26,7 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
     }
 
     return(
-        <div className="relative w-full md:h-72 h-full rounded-md p-4 bg-card-textArea ">
+        <div className="relative w-full min-h-48 h-fit rounded-md p-4 bg-card-textArea text-wrap">
             <p className="font-bold pb-2">About</p>
             { editing ? (
                 <div className="space-y-5 h-full pb-8">
@@ -33,7 +34,7 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
                         className="w-full h-full resize-none bg-card-textArea border-none"
                         value={draftBio}
                         onChange={(e) => setDraftBio(e.target.value)}
-                        maxLength={500}/>
+                        maxLength={700}/>
                     <Button className="h-6 w-[calc(100%+32px)] -ml-4" onClick={handleSave}>
                         Save
                     </Button>
@@ -52,7 +53,7 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
                 )
             ) : (
                 <div>
-                    <p>{draftBio}</p>
+                    <p className="whitespace-pre-line">{draftBio}</p>
                     {editable && (
                         <SquarePen className="absolute top-[18px] left-[68px] h-5 w-5 hover:scale-110 hover:text-subtext" onClick={ () => setEditing(true)}/>
                     )}

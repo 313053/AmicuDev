@@ -4,6 +4,7 @@ export interface UserLink {
 }
 
 export interface UserData {
+    id: bigint
     username: string
     emailAddress: string
     firstName: string
