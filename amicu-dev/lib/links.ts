@@ -11,6 +11,7 @@ export function GetAccountLink() {
         '/'
 }
 
+
 // List of websites whose icons will be displayed when
 // a user references them in  a link
 export const allowedIcons : string[] = [

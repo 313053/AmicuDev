@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { User } from "lucide-react"
+import { Settings, User } from "lucide-react"
 import { Skeleton } from "../ui/skeleton"
 import { useEffect, useState } from "react"
 import UserBio from "./bio"
@@ -163,7 +163,8 @@ export default function ProfileCard({ userId } : {userId : string}) {
     }
 
     return(
-        <Card className="w-full sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10">
+        <Card className="w-full sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10 relative">
+            <Settings className={`absolute left-5 top-5 hover:animate-spin-slow text-subtext ${isCurrentUser ? "" : "hidden"}`}/>
             <CardHeader className="flex flex-col md:flex-row items-center md:justify-evenly border-b w-3/4 pb-4 mb-4">
                 <Avatar className="border-2 border-subtext h-16 w-16 sm:h-24 sm:w-24 md:h-28 md:w-28">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
