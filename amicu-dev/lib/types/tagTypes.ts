@@ -1,6 +1,12 @@
+
 export interface TagData {
     name: string
     complexity: number
+}
+
+export interface TagPostProps {
+    newTags : TagData[]
+    deletedTags : TagData[]
 }
 
 export interface SkillLevel {

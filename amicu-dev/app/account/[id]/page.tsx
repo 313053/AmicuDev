@@ -8,7 +8,7 @@ export default function Account() {
     const userId = params.id as string
     
     return(
-        <div className="flex flex-col items-center w-full h-full">
+        <div className="flex flex-col items-center w-full h-full -mt-20">
             <ProfileCard userId={userId}/>
         </div>
     );

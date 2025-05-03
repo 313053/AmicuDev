@@ -1,6 +1,6 @@
 'use client'
 
-import { useUser } from "@clerk/nextjs"
+import { useClerk, useUser } from "@clerk/nextjs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Settings, User } from "lucide-react"
@@ -9,8 +9,8 @@ import { useEffect, useState } from "react"
 import UserBio from "./bio"
 import { UserData, UserLink } from "@/lib/types/profileTypes"
 import UserLinks from "./links"
-import UserTags from "./tags"
-import { TagData } from "@/lib/types/tagTypes"
+import UserTags from "./tags/tags"
+import { TagData, TagPostProps } from "@/lib/types/tagTypes"
 
 
 
@@ -22,7 +22,9 @@ export default function ProfileCard({ userId } : {userId : string}) {
     const [ isLoadingTags, setIsLoadingTags ] = useState(true);
     const [ error, setError ] = useState<string | null>(null);
 
-    const { user: currentUser, isLoaded: isAuthLoaded } = useUser()
+    const { user: currentUser, isLoaded: isAuthLoaded } = useUser();
+    const { redirectToUserProfile } = useClerk();
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -33,7 +35,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
             }
             try {
                 setIsLoadingMain(true);
-                const response = await fetch(`/api/get-user/${userId}`);
+                const response = await fetch(`/api/user/get-user/${userId}`);
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch user data: ${response.status}`);
@@ -69,7 +71,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
             }
             try {
                 setIsLoadingTags(true);
-                const response = await fetch(`/api/get-user-tags/${user.id}`);
+                const response = await fetch(`/api/tag/get-user-tags/${user.id}`);
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch tag data: ${response.status}`)
@@ -82,7 +84,6 @@ export default function ProfileCard({ userId } : {userId : string}) {
                 }));
                 setUserTags(tagData);
                 setIsLoadingTags(false);
-                console.log(tagData)
             } catch (err) {
                 console.error("Error fetching user tag data: ", err);
                 setError(err instanceof Error ? err.message : "Unknown error occured");
@@ -94,7 +95,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
     
     async function handleBioChange(newbio: string) {
         try {
-            const res = await fetch("/api/set-bio",{
+            const res = await fetch("/api/user/set-bio",{
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -112,7 +113,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
 
     async function handleLinksChange(newLinks: UserLink[]) {
         try {
-            const res = await fetch("/api/set-links",{
+            const res = await fetch("/api/user/set-links",{
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -122,6 +123,23 @@ export default function ProfileCard({ userId } : {userId : string}) {
             
             if (!res.ok) {
                 throw new Error("Failed to update links");
+            }
+        }   catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function handleTagsChange({newTags, deletedTags}: TagPostProps) {
+        try {
+            const res = await fetch("/api/tag/set-user-tags",{
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({ tags : newTags, badTags : deletedTags }),
+            });
+            if (!res.ok) {
+                throw new Error("Failed to update tags");
             }
         }   catch (err) {
             console.error(err);
@@ -163,8 +181,10 @@ export default function ProfileCard({ userId } : {userId : string}) {
     }
 
     return(
-        <Card className="w-full sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-10 relative">
-            <Settings className={`absolute left-5 top-5 hover:animate-spin-slow text-subtext ${isCurrentUser ? "" : "hidden"}`}/>
+        <Card className="w-full sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-32 md:pb-0 relative">
+            <div className={`absolute right-11 top-11 ${isCurrentUser ? "" : "hidden"} `}>
+                <Settings className="hover:animate-spin-slow active:scale-90 text-subtext w-8 h-8" onClick={redirectToUserProfile}/>
+            </div>
             <CardHeader className="flex flex-col md:flex-row items-center md:justify-evenly border-b w-3/4 pb-4 mb-4">
                 <Avatar className="border-2 border-subtext h-16 w-16 sm:h-24 sm:w-24 md:h-28 md:w-28">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
@@ -196,11 +216,22 @@ export default function ProfileCard({ userId } : {userId : string}) {
                 />
                 <div className="h-2"></div>
                 <p className="text-xl sm:text-2xl font-semibold w-full text-left">Skills</p>
-                <UserTags 
-                    content={userTags || []}
-                    editable={isCurrentUser || false}
-                    onSave={console.log("tags saved")}    
-                />
+                {!isLoadingTags 
+                ? (
+                    <UserTags 
+                        content={userTags || []}
+                        editable={isCurrentUser || false}
+                        onSave={handleTagsChange}    
+                    />
+                ) : (
+                    <div className="flex flex-row justify-start w-full gap-4 ">
+                         <Skeleton className="w-20 h-10 rounded-lg" />
+                         <Skeleton className="w-32 h-10 rounded-lg" />
+                         <Skeleton className="w-24 h-10 rounded-lg" />
+                         <Skeleton className="w-10 h-10 rounded-lg" />
+                         
+                    </div>
+                )}
             </CardContent>
         </Card>
 

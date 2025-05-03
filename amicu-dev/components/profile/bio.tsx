@@ -13,9 +13,12 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
     const [noBio, setNoBio] = useState(content.trim() === "");
     const [editing, setEditing] = useState(false);
     const [draftBio, setDraftBio] = useState(content);
+    const [loading, setLoading] = useState(false);
 
     const handleSave = async () => {
+        setLoading(true);
         await onSave(draftBio);
+        setLoading(false);
         setNoBio(draftBio.trim() === "")
         setEditing(false);
     }
@@ -26,12 +29,12 @@ export default function UserBio( {content, editable, onSave} : BioProps ){
     }
 
     return(
-        <div className="relative w-full min-h-48 h-fit rounded-md p-4 bg-card-textArea text-wrap">
+        <div className={`relative w-full min-h-48 h-fit rounded-md p-4 bg-card-textArea text-wrap `}>
             <p className="font-bold pb-2">About</p>
             { editing ? (
                 <div className="space-y-5 h-full pb-8">
                     <Textarea 
-                        className="w-full h-full resize-none bg-card-textArea border-none"
+                        className={`w-full h-full resize-none bg-card-textArea border-none ${loading && "blur-sm animate-pulse"}`}
                         value={draftBio}
                         onChange={(e) => setDraftBio(e.target.value)}
                         maxLength={700}/>

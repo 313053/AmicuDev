@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export default function Footer() {
     return(
-        <footer className="flex justify-center items-center align-middle absolute bottom-0 w-full shadow-inner sm:h-14">
-            <p className="text-center text-subtext opacity-60">
+        <footer className="flex justify-center items-center align-middle absolute bottom-0 w-full shadow-inner h-14">
+            <p className="text-center text-subtext opacity-60 text-sm sm:text-md">
             Created by&nbsp;
             <Link href="https://github.com/313053" className="hover:underline text-subtext"target="_blank" rel="noopener noreferrer">
                 Wiktor Piórkowski

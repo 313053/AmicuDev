@@ -9,13 +9,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
-import { Bug, FolderCode, LogOut, Mail, Settings, User, Users } from "lucide-react";
+import { Bug, FolderCode, LogOut, Mail, Settings, User } from "lucide-react";
 import UserAvatar from "../user_avatar/user-avatar";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useClerk } from "@clerk/nextjs";
 import { GetAccountLink } from "@/lib/links";
 import Link from "next/link";
 
   export function Personal() {
+    const { redirectToUserProfile } = useClerk();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
@@ -26,18 +28,14 @@ import Link from "next/link";
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <Link href={GetAccountLink()}>
-                    <DropdownMenuItem>
-                        <User />
-                        <span>My Profile</span>
-                    </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <User />
+                            <span>My Profile</span>
+                        </DropdownMenuItem>
                     </Link>
                     <DropdownMenuItem>
                         <Mail />
                         <span>My Messages</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Users />
-                        <span>My Teams</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <FolderCode />
@@ -46,11 +44,13 @@ import Link from "next/link";
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <Bug />
-                        <span>Contact Support</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <Link href="https://github.com/313053/AmicuDev/issues/new">
+                        <DropdownMenuItem>
+                            <Bug />
+                            <span>Contact Support</span>
+                        </DropdownMenuItem>
+                    </Link>
+                    <DropdownMenuItem onClick={redirectToUserProfile}>
                         <Settings />
                         <span>Settings</span>
                     </DropdownMenuItem>

@@ -29,8 +29,8 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
         if(draftLinks) {
             const cleanedLinks = removeEmptyLinks();
             if(cleanedLinks !== content)
+                setDisplayedLinks(cleanedLinks)
                 await onSave(cleanedLinks);
-            setDisplayedLinks(cleanedLinks)
         }
 
     }
@@ -44,7 +44,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
     )) || []; 
 
     const resetDraftLinks = () => {
-        setDraftLinks(content)
+        setDraftLinks(displayedLinks)
     }
 
     const addLink = () => {
@@ -77,7 +77,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
                 <Dialog>
                     <DialogTrigger asChild onClick={resetDraftLinks}>
                         <div className="flex flex-row justify-between gap-x-2 hover:scale-110 hover:text-subtext">
-                            <CirclePlus className="w-6 h-6"/>
+                            <CirclePlus className="w-6 h-6 active:scale-90"/>
                             {linkIcons.length === 0 && (
                                 <p>Add Links</p>
                             )}
@@ -157,7 +157,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
     
         return(
         <div className="flex flex-row justify-around gap-x-2 items-center">
-            <Trash2 className="w-7 h-7 hover:scale-110" onClick={handleDelete}/>
+            <Trash2 className="min-w-5 min-h-5 hover:scale-110" onClick={handleDelete}/>
             <Select 
                 disabled={!linkEditing} 
                 onValueChange={(e) =>
@@ -170,7 +170,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
                     ? draftLink.name.toLowerCase() 
                     : "other")
                     }>
-                <SelectTrigger className="w-36" onClick={() =>setLinkEditing(true)}>
+                <SelectTrigger className="w-36 bg-card disabled:bg-background shadow-lg">
                     <SelectValue placeholder="Select Domain..."/>
                 </SelectTrigger>
                 <SelectContent>
@@ -195,7 +195,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
                 value={draftLink.url}
                 placeholder="link to website"
                 onMouseDown={() =>setLinkEditing(true)}
-                className={errorState ? "border-red-500 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" : ''}
+                className={errorState ? "border-red-500 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" : '' + "bg-card disabled:bg-background shadow-lg"}
                 >
             </Input>
             {linkEditing 

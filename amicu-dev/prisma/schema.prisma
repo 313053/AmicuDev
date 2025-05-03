@@ -23,8 +23,8 @@ model message {
   contents                                        String?       @default("")
   sender                                          BigInt?
   conversation                                    BigInt?
-  conversation_message_conversationToconversation conversation? @relation("message_conversationToconversation", fields: [conversation], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user                                            user?         @relation(fields: [sender], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  conversation_message_conversationToconversation conversation? @relation("message_conversationToconversation", fields: [conversation], references: [id], onDelete: Cascade)
+  user                                            user?         @relation(fields: [sender], references: [id], onDelete: SetDefault)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -37,8 +37,8 @@ model project {
   conversation                                    BigInt?
   creator                                         BigInt?
   github                                          String?
-  conversation_project_conversationToconversation conversation?  @relation("project_conversationToconversation", fields: [conversation], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user                                            user?          @relation(fields: [creator], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  conversation_project_conversationToconversation conversation?  @relation("project_conversationToconversation", fields: [conversation], references: [id], onDelete: SetDefault)
+  user                                            user?          @relation(fields: [creator], references: [id], onDelete: SetDefault)
   user_project_user_project_projectToproject      user_project[] @relation("user_project_projectToproject")
 }
 
@@ -70,8 +70,8 @@ model user_conversation {
   created_at                                                DateTime      @default(now()) @db.Timestamptz(6)
   user                                                      BigInt?
   conversation                                              BigInt?
-  conversation_user_conversation_conversationToconversation conversation? @relation("user_conversation_conversationToconversation", fields: [conversation], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user_user_conversation_userTouser                         user?         @relation("user_conversation_userTouser", fields: [user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  conversation_user_conversation_conversationToconversation conversation? @relation("user_conversation_conversationToconversation", fields: [conversation], references: [id], onDelete: Cascade)
+  user_user_conversation_userTouser                         user?         @relation("user_conversation_userTouser", fields: [user], references: [id], onDelete: Cascade)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -80,8 +80,8 @@ model user_project {
   created_at                            DateTime @default(now()) @db.Timestamptz(6)
   user                                  BigInt?
   project                               BigInt?
-  project_user_project_projectToproject project? @relation("user_project_projectToproject", fields: [project], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user_user_project_userTouser          user?    @relation("user_project_userTouser", fields: [user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  project_user_project_projectToproject project? @relation("user_project_projectToproject", fields: [project], references: [id], onDelete: Cascade)
+  user_user_project_userTouser          user?    @relation("user_project_userTouser", fields: [user], references: [id], onDelete: Cascade)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -90,6 +90,8 @@ model user_tag {
   created_at               DateTime @default(now()) @db.Timestamptz(6)
   user                     BigInt?
   tag                      BigInt?
-  tag_user_tag_tagTotag    tag?     @relation("user_tag_tagTotag", fields: [tag], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user_user_tag_userTouser user?    @relation("user_tag_userTouser", fields: [user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tag_user_tag_tagTotag    tag?     @relation("user_tag_tagTotag", fields: [tag], references: [id], onDelete: Cascade)
+  user_user_tag_userTouser user?    @relation("user_tag_userTouser", fields: [user], references: [id], onDelete: Cascade)
+
+  @@unique([user, tag], map: "unique_user_tag")
 }
