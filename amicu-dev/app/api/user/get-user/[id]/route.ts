@@ -1,8 +1,6 @@
 import { clerkClient } from '@clerk/nextjs/server'
 import { NextRequest } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from '@/lib/prisma/prismaClient'
 
 export async function GET(
     req: NextRequest,

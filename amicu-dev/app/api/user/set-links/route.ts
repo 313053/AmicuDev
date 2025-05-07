@@ -1,10 +1,8 @@
+import prisma from '@/lib/prisma/prismaClient';
 import { UserLink } from '@/lib/types/profileTypes';
 import { auth } from '@clerk/nextjs/server'; 
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
-
-const prisma = new PrismaClient();
-
 
 function isValidLink(link: unknown): link is UserLink {
     return (

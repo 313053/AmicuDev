@@ -10,7 +10,6 @@ export const sidebarLinks: SidebarLink[] = [
     { name: "Home", url: "/", icon: Home},
     { name: "Explore", url: "/explore", icon: Compass},
     { name: "Messages", url: "/", icon: Mail},
-    { name: "Feedback", url: "/contact", icon: SendHorizonal}
 ];
 
 export const sampleProjects: SidebarLink[] = [

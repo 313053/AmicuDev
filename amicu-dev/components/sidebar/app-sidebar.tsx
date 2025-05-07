@@ -4,7 +4,7 @@ import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuButton,
 import { sampleProjects, sidebarLinks } from "@/lib/sidebarUtils"
 import Link from "next/link"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
-import { ChevronRight, FolderCode, Moon, Sun } from "lucide-react"
+import { ChevronRight, FolderCode, Moon, SendHorizonal, Sun } from "lucide-react"
 import { SignedIn, SignedOut } from "@clerk/nextjs"
 import SignInButton from "../navbar/sign-in-button"
 import { useTheme } from "next-themes"
@@ -34,6 +34,14 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+            <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                    <Link href="https://github.com/313053/AmicuDev/issues/new" target="_blank" rel="noopener noreferrer">
+                        <SendHorizonal />
+                        <span className="text-white font-mono">Feedback</span>
+                    </Link>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild onClick={() => (theme === "light") ? setTheme("dark") : setTheme("light")}>
                 <div>

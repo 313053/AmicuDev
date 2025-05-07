@@ -67,14 +67,12 @@ export function TagInput({
         onChange(newValue);
     };
 
-    // Direct click handler for suggestions
     const handleClickSuggestion = (selected: string) => {
         setInputValue(selected);
         onChange(selected);
         setOpen(false);
     };
 
-    // Custom suggestion list render to bypass Command's event handling issues
     const renderSuggestions = () => {
         if (suggestions.length === 0) {
             return <div className="py-6 text-center text-sm">No tags found</div>;

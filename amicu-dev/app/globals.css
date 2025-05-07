@@ -11,6 +11,7 @@
     --card: 0 0% 100%;
     --card-foreground: 240 6% 3%;
     --card-textArea: 216 24% 95%;
+    --card-border: 0 0% 90%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 222.2 47.4% 11.2%;
@@ -42,7 +43,8 @@
     --sidebar-accent: 318 30% 38%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 318 30% 32%;
-    --sidebar-ring: 217.2 91.2% 59.8%
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-subtext: 222.2 1.4% 70%;
   ;}
   .dark {
     --navbar-primary:318 10% 72%;
@@ -53,6 +55,7 @@
     --card: 318 30% 35%;
     --card-foreground: 0 0% 85%;
     --card-textArea: 318 30% 38%;
+    --card-border: 318 30% 35%;
     --popover: 318 30% 35%;
     --popover-foreground: 210 40% 98%;
     --primary: 210 40% 98%;
@@ -83,7 +86,10 @@
     --sidebar-accent: 318 30% 38%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 318 30% 40%;
-    --sidebar-ring: 217.2 91.2% 59.8%}
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-subtext: 222.2 1.4% 70%;
+
+}
     ::-webkit-scrollbar-thumb {
       background: hsl(var(--muted-foreground));
     }

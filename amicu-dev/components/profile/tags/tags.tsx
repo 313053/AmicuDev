@@ -130,7 +130,6 @@ export default function UserTags({ content, editable, onSave }: TagProps) {
         const [levelErrorState, setLevelErrorState] = useState(false);
 
         const handleTagFormSave = () => {
-            console.log(draftTag)
             const nameValidity = draftTag.name.trim() !== "";
             const complexityValidity = draftTag.complexity > 0; 
             const nameRepetition = draftTags?.some( tag => tag.name.toLowerCase().trim() === draftTag.name.toLowerCase().trim()) && isNewTag
@@ -144,7 +143,6 @@ export default function UserTags({ content, editable, onSave }: TagProps) {
                 toast.error("Names cannot repeat!");
                 setNameErrorState(true);
                 saveStopper = true;
-                console.log(draftTags)
             }
             if(!complexityValidity){
                 toast.error("Choose a valid skill level");

@@ -15,8 +15,8 @@ export interface SkillLevel {
 }
 
 export const skillLevels : SkillLevel[] = [
-    {name : "beginner", color : "none"},
-    {name : "novice", color : "ring-yellow-700"},
+    {name : "Beginner", color : "none"},
+    {name : "Novice", color : "ring-yellow-700"},
     {name : "Intermediate", color : "ring-zinc-300"},
     {name : "Advanced", color : "ring-yellow-300"},
     {name : "Expert", color : "ring-cyan-400"},

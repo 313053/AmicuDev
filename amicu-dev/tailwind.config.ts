@@ -26,7 +26,8 @@ export default {
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))',
-				textArea: 'hsl(var(--card-textArea))'
+				textArea: 'hsl(var(--card-textArea))',
+                border: 'hsl(var(--card-border))'
   			},
   			popover: {
   				DEFAULT: 'hsl(var(--popover))',
@@ -70,7 +71,8 @@ export default {
   				accent: 'hsl(var(--sidebar-accent))',
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
-  				ring: 'hsl(var(--sidebar-ring))'
+  				ring: 'hsl(var(--sidebar-ring))',
+                subtext: 'hsl(var(--sidebar-subtext))'
   			},
 			navbar: {
 				primary: 'hsl(var(--navbar-primary))',

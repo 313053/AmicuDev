@@ -11,10 +11,6 @@ export function GetAccountLink() {
         '/'
 }
 
-export function redirectToAccountPortal() {
-    return `https://${process.env.NEXT_PUBLIC_CLERK_FRONTEND_API}/user`
-}
-
 // List of websites whose icons will be displayed when
 // a user references them in  a link
 export const allowedIcons : string[] = [

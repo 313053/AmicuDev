@@ -11,11 +11,12 @@ import { UserData, UserLink } from "@/lib/types/profileTypes"
 import UserLinks from "./links"
 import UserTags from "./tags/tags"
 import { TagData, TagPostProps } from "@/lib/types/tagTypes"
+import { useParams } from "next/navigation"
 
 
 
 
-export default function ProfileCard({ userId } : {userId : string}) {
+export default function ProfileCard() {
     const [ user, setUser ] = useState<UserData | null>(null);
     const [ userTags, setUserTags ] = useState<TagData[] | null>(null);
     const [ isLoadingMain, setIsLoadingMain ] = useState(true);
@@ -24,6 +25,10 @@ export default function ProfileCard({ userId } : {userId : string}) {
 
     const { user: currentUser, isLoaded: isAuthLoaded } = useUser();
     const { redirectToUserProfile } = useClerk();
+    const userId = useParams().id
+
+    
+    const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
 
 
     useEffect(() => {
@@ -71,7 +76,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
             }
             try {
                 setIsLoadingTags(true);
-                const response = await fetch(`/api/tag/get-user-tags/${user.id}`);
+                const response = await fetch(`/api/user/get-user/${user.id}/tags`);
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch tag data: ${response.status}`)
@@ -93,7 +98,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
         fetchUserTagData();
     }, [user]);
     
-    async function handleBioChange(newbio: string) {
+    async function handleBioChange(newbio: string) {    
         try {
             const res = await fetch("/api/user/set-bio",{
                 method: "POST",
@@ -150,15 +155,13 @@ export default function ProfileCard({ userId } : {userId : string}) {
     new Date(user.createdAt).toLocaleDateString() 
     : 
     "Unknown registration date";
-
-    const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
     
 
     if (isLoadingMain){
         return(
             <Card className="w-full sm:w-[640px] flex flex-col items-center">
                 <CardContent className="flex flex-col items-center w-3/4 pt-6">
-                    <Skeleton className="w-14 h-14 rounded-full" />
+                    <Skeleton className="h-16 w-16 sm:h-24 sm:w-24 md:h-28 md:w-28 rounded-full" />
                     <div className="space-y-6 my-6 w-full flex flex-col items-center">
                         <Skeleton className="h-6 w-1/3" />
                         <Skeleton className="h-6 w-full" />
@@ -181,7 +184,7 @@ export default function ProfileCard({ userId } : {userId : string}) {
     }
 
     return(
-        <Card className="w-full sm:w-[520px] md:w-[680px] h-full flex flex-col items-center pb-32 md:pb-0 relative">
+        <Card className="w-full sm:w-[520px] md:w-[680px] h-fit flex flex-col items-center pb-7 relative">
             <div className={`absolute right-11 top-11 ${isCurrentUser ? "" : "hidden"} `}>
                 <Settings className="hover:animate-spin-slow active:scale-90 text-subtext w-8 h-8" onClick={redirectToUserProfile}/>
             </div>

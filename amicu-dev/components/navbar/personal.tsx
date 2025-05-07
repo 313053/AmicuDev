@@ -37,14 +37,16 @@ import Link from "next/link";
                         <Mail />
                         <span>My Messages</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <FolderCode />
-                        <span>My Projects</span>
-                    </DropdownMenuItem>
+                    <Link href={`${GetAccountLink()}/projects`}>
+                        <DropdownMenuItem>
+                            <FolderCode />
+                            <span>My Projects</span>
+                        </DropdownMenuItem>
+                    </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <Link href="https://github.com/313053/AmicuDev/issues/new">
+                    <Link href="https://github.com/313053/AmicuDev/issues/new" target="_blank" rel="noopener noreferrer">
                         <DropdownMenuItem>
                             <Bug />
                             <span>Contact Support</span>
