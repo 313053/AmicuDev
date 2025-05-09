@@ -2,7 +2,8 @@
 export interface ProjectCardData{
     id : bigint
     title : string
-    created_at : Date
+    createdAt : Date
     description : string
     thumbnail : string
+    role : number
 }

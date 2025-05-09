@@ -31,11 +31,11 @@ model message {
 model project {
   id                                              BigInt         @id @unique @default(autoincrement())
   created_at                                      DateTime       @default(now()) @db.Timestamptz(6)
-  description                                     String?        @default("")
-  title                                           String?        @default("")
-  thumbnail                                       String?        @default("")
+  description                                     String         @default("")
+  title                                           String         @default("")
+  thumbnail                                       String         @default("")
   conversation                                    BigInt?
-  github                                          String?        @default("")
+  github                                          String         @default("")
   conversation_project_conversationToconversation conversation?  @relation("project_conversationToconversation", fields: [conversation], references: [id], onDelete: SetDefault)
   user_project_user_project_projectToproject      user_project[] @relation("user_project_projectToproject")
   waiting_list_waiting_list_projectToproject      waiting_list[] @relation("waiting_list_projectToproject")

@@ -23,6 +23,7 @@ export default {
   			foreground: 'hsl(var(--foreground))',
 			subtext: 'hsl(var(--subtext))',
 			button: 'hsl(var(--button))',
+            separator: 'hsl(var(--separator))',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))',

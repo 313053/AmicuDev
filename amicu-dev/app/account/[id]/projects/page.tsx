@@ -1,7 +1,6 @@
 import ProjectsCard from "@/components/projects/my_projects/projects";
 import { getUserProjects } from "@/lib/server/getUserProjects";
 import { ReducedClerkData } from "@/lib/types/profileTypes";
-import { ProjectCardData } from "@/lib/types/projectTypes";
 import { clerkClient} from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 
@@ -14,7 +13,7 @@ export default async function MyProjects({ params } : { params : Promise<{ id : 
         notFound();
 
     try {
-        const projects = await getUserProjects(userId)
+        const projects = await getUserProjects(userId);
 
         if(!projects)
             throw new Error(`failed to fetch project data:`);
@@ -31,7 +30,7 @@ export default async function MyProjects({ params } : { params : Promise<{ id : 
         }
 
         return (
-            <ProjectsCard userProjects={projects as ProjectCardData[]} user={userReduced} />
+            <ProjectsCard userProjects={projects} user={userReduced} />
         )
 
     } catch (err) {

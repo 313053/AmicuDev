@@ -13,7 +13,7 @@ import Link from "next/link";
 function Navbar() {
     return(
         <nav className="bg-navbar-background mx-0 mb-4 border-b-2 justify-items-center px-4 fixed top-0 w-full z-20">
-            <div className='w-full flex flex-row gap-y-5 justify-between sm:justify-between sm:items-center sm:gap-x-20 py-3 items-center'>
+            <div className='w-full flex flex-row gap-y-5 justify-between sm:items-center sm:gap-x-20 py-3 items-center'>
                 <div className="flex items-center">
                     <SidebarTrigger />
                     <Link href="/">
