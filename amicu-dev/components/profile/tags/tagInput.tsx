@@ -4,19 +4,13 @@ import { Loader2 } from "lucide-react";
 
 interface TagAutocompleteInputProps {
     value: string;
-    onChange: (value: string) => void;
+    onChange: (value : string) => void;
     disabled?: boolean;
     placeholder?: string;
     errorState?: boolean;
 }
 
-export function TagInput({
-    value,
-    onChange,
-    disabled = false,
-    placeholder = "Enter a skill...",
-    errorState = false
-}: TagAutocompleteInputProps) {
+export function TagInput({ value, onChange, disabled = false, placeholder = "Enter a skill...", errorState = false }: TagAutocompleteInputProps) {
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState(value);
     const [suggestions, setSuggestions] = useState<string[]>([]);

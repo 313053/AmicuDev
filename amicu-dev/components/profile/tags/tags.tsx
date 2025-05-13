@@ -76,8 +76,8 @@ export default function UserTags({ content, editable, onSave }: TagProps) {
                     `flex flex-row t w-fit border divide-x-2 rounded-lg items-center shadow-lg text-sm sm:text-base 
                     ${(tag.complexity > 1 && skillColors) ? `ring-4 ${skillLevels[tag.complexity-1].color}`: ``}` // Makes the object have a different ring based on the skill level
                     }>
-                    <p className="p-2 bg-button text-background rounded-l-md text-center">{tag.name}</p>
-                    <p className="p-2 bg-background text-foreground rounded-r-md">
+                    <p className="p-2 bg-button text-background rounded-l-md text-center h-full">{tag.name}</p>
+                    <p className="p-2 bg-background text-foreground rounded-r-md h-full">
                         {tag.complexity > 0 && tag.complexity <= skillLevels.length ? 
                             skillLevels[tag.complexity-1].name : 'Unknown'}
                     </p>

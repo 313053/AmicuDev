@@ -37,16 +37,18 @@ model project {
   conversation                                    BigInt?
   github                                          String         @default("")
   conversation_project_conversationToconversation conversation?  @relation("project_conversationToconversation", fields: [conversation], references: [id], onDelete: SetDefault)
+  project_tag_project_tag_projectToproject        project_tag[]  @relation("project_tag_projectToproject")
   user_project_user_project_projectToproject      user_project[] @relation("user_project_projectToproject")
   waiting_list_waiting_list_projectToproject      waiting_list[] @relation("waiting_list_projectToproject")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model tag {
-  id                         BigInt     @id @unique @default(autoincrement())
-  name                       String?    @default("")
-  complexity                 Int?
-  user_tag_user_tag_tagTotag user_tag[] @relation("user_tag_tagTotag")
+  id                               BigInt        @id @unique @default(autoincrement())
+  name                             String?       @default("")
+  complexity                       Int?
+  project_tag_project_tag_tagTotag project_tag[] @relation("project_tag_tagTotag")
+  user_tag_user_tag_tagTotag       user_tag[]    @relation("user_tag_tagTotag")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -103,4 +105,13 @@ model waiting_list {
   project                               BigInt
   project_waiting_list_projectToproject project  @relation("waiting_list_projectToproject", fields: [project], references: [id], onDelete: NoAction, onUpdate: NoAction)
   user_waiting_list_userTouser          user     @relation("waiting_list_userTouser", fields: [user], references: [id], onDelete: Cascade)
+}
+
+model project_tag {
+  id                                   BigInt   @id @default(autoincrement())
+  created_at                           DateTime @default(now()) @db.Timestamptz(6)
+  project                              BigInt?
+  tag                                  BigInt?
+  project_project_tag_projectToproject project? @relation("project_tag_projectToproject", fields: [project], references: [id], onDelete: Cascade)
+  tag_project_tag_tagTotag             tag?     @relation("project_tag_tagTotag", fields: [tag], references: [id], onDelete: Cascade)
 }

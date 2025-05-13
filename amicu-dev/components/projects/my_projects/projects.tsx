@@ -42,8 +42,8 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
     }
 
     return (
-        <div className="flex flex-col md:flex-row justify-center gap-x-2">
-        <Card className="w-full h-fit max-w-4xl lg:w-5/6 relative">
+        <div className="flex flex-col md:flex-row justify-center gap-x-2 -mt-20">
+        <Card className="w-full h-fit min-h-[420.8px] max-w-4xl lg:w-5/6 relative">
             <CardContent className="h-fit">
                 <div className="min-h-96 flex flex-col items-center p-2">
                     <div className="absolute top-0 h-11 w-full bg-sidebar rounded-t-xl z-0" />
@@ -56,9 +56,11 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
                             { isCurrentUser ? (
                                 <div className="w-full h-full flex flex-col justify-center items-center text-2xl gap-4">
                                     <p>You have no projects yet.</p>
-                                    <Button>
-                                        Create One
-                                    </Button>
+                                    <Link href={`/account/${userId}/projects/new`}>
+                                        <Button>
+                                            Create One
+                                        </Button>
+                                    </Link>
                                 </div>
                             ) : (
                                 <p>This user has no projects yet.</p>
@@ -69,10 +71,13 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
                         <div className="w-full h-fit flex flex-col mt-6">
                             { managedProjects.length > 0 && (
                                 <div className="flex flex-col">
-                                    <p className="font-semibold text-xl">Projects you manage</p>
+                                    <p className="font-semibold text-xl">Projects {isCurrentUser ? "you" : "they"} manage</p>
                                     <div className="w-full h-fit flex flex-wrap gap-4 justify-start sm:justify-start content-start overflow-y-auto py-6">
                                         {managedProjects.map((project, index) => (
-                                            <ProjectMiniature content={project} key={index}/>
+                                            <div key={index} className="flex flex-row gap-x-4">
+                                                <ProjectMiniature content={project}/>
+                                                {index < regularProjects.length-1 && (<div className="hidden sm:block border-l border-separator" />) }
+                                            </div>
                                         ))}
                                     </div>
                                     <div className="border-b border-separator my-6"/>
@@ -80,7 +85,7 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
                             )}
                             { regularProjects.length > 0 && (
                                 <div className="flex flex-col">
-                                    <p className="font-semibold text-xl">Projects you&apos;ve joined</p>
+                                    <p className="font-semibold text-xl">Projects {isCurrentUser ? "you" : "they"}&apos;ve joined</p>
                                     <div className="w-full h-fit flex flex-col sm:flex-row sm:flex-wrap gap-4 justify-start sm:justify-start content-start overflow-y-auto py-6">
                                         {regularProjects.map((project, index) => (
                                             <div key={index} className="flex flex-row gap-x-4">
@@ -95,7 +100,7 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
                             {isCurrentUser && (
                                 <Link href={`/account/${userId}/projects/new`}>
                                     <div className="flex flex-row justify-center">
-                                        <Button variant="ghost" className="flex items-center w-1/3 min-w-40 text-xl opacity-50 hover:scale-105">
+                                        <Button variant="ghost" className="flex items-center w-1/3 min-w-52 text-xl opacity-50 hover:scale-105">
                                             <Plus className="align-middle -mb-[2px]" size={23} strokeWidth={4}/> Create new project 
                                         </Button>
                                     </div>
@@ -153,7 +158,7 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
 
 export function ProjectMiniature( { content } : { content : ProjectCardData }) {
     return (
-        <div className="flex flex-row w-[250px] h-14 items-center justify-center gap-x-4 hover:bg-card-textArea hover:animate-pulse rounded-lg">
+        <div className="flex flex-row w-[250px] h-14 items-center justify-center gap-x-4 hover:bg-card-textArea hover:animate-pulse rounded-lg" title={content.title}>
             <Avatar className="w-14 h-full rounded-xl bg-card-textArea">
                 <AvatarImage src={content.thumbnail} alt="thumbnail"/>
                 <AvatarFallback className="w-full h-full bg-card-textArea"><p className="text-3xl font-bold">{content.title[0].toUpperCase()}</p></AvatarFallback>
