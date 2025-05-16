@@ -159,13 +159,23 @@ export default function ProfileCard() {
 
     if (isLoadingMain){
         return(
-            <Card className="w-full sm:w-[640px] flex flex-col items-center">
+            <Card className="w-full sm:w-[520px] md:w-[700px] lg:w-[760px] min-h-[760px] flex flex-col items-center">
                 <CardContent className="flex flex-col items-center w-3/4 pt-6">
-                    <Skeleton className="h-16 w-16 sm:h-24 sm:w-24 md:h-28 md:w-28 rounded-full" />
+                    <div className="flex flex-row w-full justify-evenly">
+                        <Skeleton className="h-28 w-28 md:h-40 md:w-40 rounded-full" />
+                        <div className="flex flex-col justify-center h-full w-1/2 gap-y-2">
+                            <Skeleton className="h-7 w-44" />
+                            <Skeleton className="h-5 w-32" />
+                            <Skeleton className="h-6 w-36" />
+                        </div>
+                    </div>
                     <div className="space-y-6 my-6 w-full flex flex-col items-center">
-                        <Skeleton className="h-6 w-1/3" />
-                        <Skeleton className="h-6 w-full" />
-                        <Skeleton className="h-[250px] w-full" />
+                        <Skeleton className="h-[1px] w-full"/>
+                        <div className="flex flex-row w-full justify-around">
+                        <Skeleton className="h-6 w-2/5" />
+                        <Skeleton className="h-6 w-2/5" />
+                        </div>
+                        <Skeleton className="h-[500px] w-full" />
                     </div>
                 </CardContent>
             </Card>
@@ -184,17 +194,17 @@ export default function ProfileCard() {
     }
 
     return(
-        <Card className="w-full sm:w-[520px] md:w-[680px] h-fit flex flex-col items-center pb-7 relative">
-            <div className={`absolute right-11 top-11 ${isCurrentUser ? "" : "hidden"} `}>
+        <Card className="w-full sm:w-[540px] md:w-[700px] lg:w-[760px] h-fit flex flex-col items-center pb-7 relative">
+            <div className={`absolute right-8 top-8 opacity-50 ${isCurrentUser ? "" : "hidden"} `}>
                 <Settings className="hover:animate-spin-slow active:scale-90 text-subtext w-8 h-8" onClick={redirectToUserProfile}/>
             </div>
-            <CardHeader className="flex flex-col md:flex-row items-center md:justify-evenly border-b w-3/4 pb-4 mb-4">
-                <Avatar className="border-2 border-subtext h-16 w-16 sm:h-24 sm:w-24 md:h-28 md:w-28">
+            <CardHeader className="flex flex-row flex-shrink items-center justify-evenly border-b w-3/4 pb-4 mb-4 gap-x-2">
+                <Avatar className="border-2 border-subtext h-28 w-28 md:h-40 md:w-40">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
                     <AvatarFallback><User /></AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col items-center md:items-start">
-                    <CardTitle className="text-xl font-bold uppercase">{user?.username}</CardTitle>
+                <div className="flex flex-col items-start justify-center md:items-start min-w-fit w-1/2 h-full">
+                    <CardTitle className="text-lg md:text-2xl max-w-full font-bold uppercase">{user?.username}</CardTitle>
                     <CardDescription className="italic">{user?.emailAddress}</CardDescription> 
                     <UserLinks
                         content={user?.links || null}

@@ -38,9 +38,11 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
     // list of favicons to represent user links with
     // placeholders for unsupported hostnames
     const linkIcons : string[] = displayedLinks?.map(link => (
-        allowedIcons.includes(link.name.toLowerCase())
+        link.name.toLowerCase().includes("discord") 
+        ? '/discord.svg'
+        : allowedIcons.includes(link.name.toLowerCase())
             ? `https://${link.name.toLowerCase()}/favicon.ico`
-            : '/globe.svg'
+            : '/globe.svg' 
     )) || []; 
 
     const resetDraftLinks = () => {
@@ -64,7 +66,7 @@ export default function UserLinks( {content, editable, onSave} : LinkProps) {
         <div>
             <div className="flex flex-row w-full justify-stretch align-middle mt-2 gap-x-1">
             {displayedLinks?.map((link, index) => (
-                <a key={index} href={link.url} title={new URL(link.url).hostname} target="_blank" rel="noopener noreferrer">
+                <a key={index} href={link.url} title={new URL(link.url).hostname} target="_blank" rel="noopener noreferrer" className="content-center">
                     <Image 
                         src={linkIcons[index] || '/globe.svg'} 
                         alt="" 

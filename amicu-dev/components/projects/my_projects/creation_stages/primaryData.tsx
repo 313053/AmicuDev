@@ -31,7 +31,7 @@ export default function PrimaryData({ onProgress, contents } : PrimaryDataProps 
         const allowedPattern = /[^\p{L}0-9\s.,\-_'()!?]/u;
         let check = true;
         setLoading(true);
-        const nameUniqueness = await checkNameUniqueness();
+        const nameUniqueness = await checkNameUniqueness(draftTitle);
 
         if (!draftTitle.trim()) {
             setTitleError(true);
@@ -71,30 +71,13 @@ export default function PrimaryData({ onProgress, contents } : PrimaryDataProps 
         setLoading(false);
         return check;
     }
-
-    const checkNameUniqueness = async () => {
-        try {
-            const response = await fetch(`/api/project/check-project-name/${draftTitle}`)
-
-            if (!response.ok) {
-                throw new Error('Failed to check project name uniqueness');
-            }
-
-            const { data } = await response.json();
-            return !data;
-        } catch (error) {
-            console.error('Error checking name uniqueness: ', error);
-            return true;
-        }
-    }
-
     
     return(
         <Card className="flex flex-col justify-between h-fit min-h-96 w-full max-w-xl">
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row justify-center gap-x-2">
-                        <Dot strokeWidth={4}/>
+                        <Dot strokeWidth={5} className="text-button"/>
                         <Dot className="opacity-20"/>
                         <Dot className="opacity-20"/>
                     </div>
@@ -127,11 +110,27 @@ export default function PrimaryData({ onProgress, contents } : PrimaryDataProps 
                 </div>
             </CardContent>
             <CardFooter className="flex flex-row justify-end gap-2">
-                <LoaderCircle className={loading ? "animate-spin-slow" : "hidden"}/>
+                <LoaderCircle className={loading ? "animate-spin-slow" : "hidden"} />
                 <Button onClick={handleNext}>
                     Next
                 </Button>
             </CardFooter>
         </Card>
     )
+}
+
+export const checkNameUniqueness = async (draftTitle : string) => {
+    try {
+        const response = await fetch(`/api/project/check-project-name/${draftTitle}`)
+
+        if (!response.ok) {
+            throw new Error('Failed to check project name uniqueness');
+        }
+
+        const { data } = await response.json();
+        return !data;
+    } catch (error) {
+        console.error('Error checking name uniqueness: ', error);
+        return true;
+    }
 }

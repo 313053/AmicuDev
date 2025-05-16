@@ -36,6 +36,7 @@ model project {
   thumbnail                                       String         @default("")
   conversation                                    BigInt?
   github                                          String         @default("")
+  links                                           String[]
   conversation_project_conversationToconversation conversation?  @relation("project_conversationToconversation", fields: [conversation], references: [id], onDelete: SetDefault)
   project_tag_project_tag_projectToproject        project_tag[]  @relation("project_tag_projectToproject")
   user_project_user_project_projectToproject      user_project[] @relation("user_project_projectToproject")

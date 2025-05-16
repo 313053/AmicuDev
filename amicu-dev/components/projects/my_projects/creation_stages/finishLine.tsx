@@ -23,7 +23,7 @@ export default function FinishLine({ errorState, loadingState, onRestart, newId 
                         <div className="flex flex-row justify-center gap-x-2">
                             <Dot className="opacity-20"/>
                             <Dot className="opacity-20"/>
-                            <Dot strokeWidth={4}/>
+                            <Dot strokeWidth={5} className="text-button"/>
                         </div>
                     </CardTitle>
                 </CardHeader>

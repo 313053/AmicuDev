@@ -20,29 +20,30 @@ export default function CreateProject() {
         description : "",
         thumbnail : "",
         tags : [],
-        github : ""
+        github : "",
+        links : []
     });
     const { user: currentUser, isLoaded: isAuthLoaded } = useUser();
     const userId = useParams().id;
     const isCurrentUser = (isAuthLoaded && currentUser && currentUser.id === userId);
 
     const handleProgressPrimaryData = (title : string, description : string) => {
-        console.log(title, description);
         setDraftProject((prev) => {
             return { ...prev, title, description }
         });
         setStage(1);
     }
 
-    const handleProgressSecondaryData = async (tags : TagData[], github : string, thumbnail : string) => {
+    const handleProgressSecondaryData = async (tags : TagData[], github : string, thumbnail : string, links : string[]) => {
         setDraftProject((prev) => {
-            return { ...prev, tags, github, thumbnail}
+            return { ...prev, tags, github, thumbnail, links}
         })
         const finishedProject = {
             ...draftProject,
             tags,
             github,
-            thumbnail
+            thumbnail,
+            links,
         }
         setLoadingState(true);
         setStage(2);
@@ -65,11 +66,9 @@ export default function CreateProject() {
             }
 
             const result = await response.json();
-            console.log("Project created:", result.data);
             setNewId(result.data.project.id);
             setLoadingState(false);
             setErrorState(false);
-            console.log(result.data)
             return result.data;
         } catch (error) {
             console.error("Error creating project:", error);
@@ -101,7 +100,7 @@ export default function CreateProject() {
                 contents={{title : draftProject.title, description : draftProject.description}}/>
         case 1 :
             return <SecondaryData 
-                onProgress={(e) => handleProgressSecondaryData(e.tags, e.github, e.thumbnail)}
+                onProgress={(e) => handleProgressSecondaryData(e.tags, e.github, e.thumbnail, e.links)}
                 onRegress={() => setStage(0)}/>
         case 2 :
             return <FinishLine

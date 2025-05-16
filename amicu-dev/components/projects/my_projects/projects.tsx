@@ -42,8 +42,8 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
     }
 
     return (
-        <div className="flex flex-col md:flex-row justify-center gap-x-2 -mt-20">
-        <Card className="w-full h-fit min-h-[420.8px] max-w-4xl lg:w-5/6 relative">
+        <div className="flex flex-col md:flex-row justify-center gap-x-2 -mt-10">
+        <Card className="w-full h-fit min-h-[420.8px] max-w-5xl lg:w-5/6 relative">
             <CardContent className="h-fit">
                 <div className="min-h-96 flex flex-col items-center p-2">
                     <div className="absolute top-0 h-11 w-full bg-sidebar rounded-t-xl z-0" />
@@ -72,11 +72,11 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
                             { managedProjects.length > 0 && (
                                 <div className="flex flex-col">
                                     <p className="font-semibold text-xl">Projects {isCurrentUser ? "you" : "they"} manage</p>
-                                    <div className="w-full h-fit flex flex-wrap gap-4 justify-start sm:justify-start content-start overflow-y-auto py-6">
+                                    <div className="w-full h-fit flex flex-wrap gap-4 justify-start content-start overflow-y-auto py-6">
                                         {managedProjects.map((project, index) => (
                                             <div key={index} className="flex flex-row gap-x-4">
                                                 <ProjectMiniature content={project}/>
-                                                {index < regularProjects.length-1 && (<div className="hidden sm:block border-l border-separator" />) }
+                                                {index < managedProjects.length-1 && (<div className="hidden sm:block border-l border-separator" />) }
                                             </div>
                                         ))}
                                     </div>
@@ -111,7 +111,7 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
                 </div>
             </CardContent>
         </Card>
-        <Card className="w-72 max-w-4xl hidden lg:flex lg:flex-col relative bg-sidebar shadow-2xl">
+        <Card className="min-w-64 hidden lg:flex lg:flex-col relative bg-sidebar shadow-2xl">
             <CardContent>
                 <div className="h-fit flex flex-col items-center p-4 relative">
                     <Link href={"/account/" + userId} title="User Profile">
@@ -158,15 +158,17 @@ export default function ProjectsCard({userProjects, user, error } : Props) {
 
 export function ProjectMiniature( { content } : { content : ProjectCardData }) {
     return (
-        <div className="flex flex-row w-[250px] h-14 items-center justify-center gap-x-4 hover:bg-card-textArea hover:animate-pulse rounded-lg" title={content.title}>
-            <Avatar className="w-14 h-full rounded-xl bg-card-textArea">
-                <AvatarImage src={content.thumbnail} alt="thumbnail"/>
-                <AvatarFallback className="w-full h-full bg-card-textArea"><p className="text-3xl font-bold">{content.title[0].toUpperCase()}</p></AvatarFallback>
-            </Avatar>
-            <div className="w-5/6 h-5/6 grid grid-rows-2 overflow-hidden">
-                <p className="font-bold truncate">{content.title}</p>
-                <p className="truncate">{content.description.length > 0 ? content.description : "No description yet." }</p>
+        <Link href={`/project/${content.id}`}>
+            <div className="flex flex-row w-[260px] h-14 items-center justify-center gap-x-4 hover:bg-card-textArea hover:animate-pulse rounded-lg" title={content.title}>
+                <Avatar className="w-14 h-full rounded-xl bg-card-textArea">
+                    <AvatarImage src={content.thumbnail} alt="thumbnail"/>
+                    <AvatarFallback className="w-full h-full bg-card-textArea"><p className="text-3xl font-bold">{content.title[0].toUpperCase()}</p></AvatarFallback>
+                </Avatar>
+                <div className="w-5/6 h-5/6 grid grid-rows-2 overflow-hidden">
+                    <p className="font-bold truncate">{content.title}</p>
+                    <p className="truncate">{content.description.length > 0 ? content.description : "No description yet." }</p>
+                </div>
             </div>
-        </div>
+        </Link>
     )
 }

@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function MyProjectsLoading() {
     return(
-        <div className="flex flex-col md:flex-row justify-center gap-x-2">
+        <div className="flex flex-col md:flex-row justify-center gap-x-2 -mt-10">
         <Card className="w-full h-fit max-w-4xl lg:w-5/6 relative">
             <CardContent className="h-fit">
                 <div className="min-h-96 h-fit flex flex-col items-center p-2">

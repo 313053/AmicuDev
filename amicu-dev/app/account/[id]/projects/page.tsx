@@ -16,7 +16,7 @@ export default async function MyProjects({ params } : { params : Promise<{ id : 
         const projects = await getUserProjects(userId);
 
         if(!projects)
-            throw new Error(`failed to fetch project data:`);
+            throw new Error(`failed to fetch project data`);
         
         const clerk = await clerkClient();
         const user = await clerk.users.getUser(userId);

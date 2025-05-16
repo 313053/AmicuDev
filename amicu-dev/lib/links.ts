@@ -15,6 +15,7 @@ export function GetAccountLink() {
 // a user references them in  a link
 export const allowedIcons : string[] = [
     'github.com',
+    'discord.com',
     'linkedin.com',
     'pinterest.com',
     'facebook.com',

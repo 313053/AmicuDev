@@ -39,6 +39,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'facebook.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'discord.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'discordapp.com'
+      }
     ],
   },
 };

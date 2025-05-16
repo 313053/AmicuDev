@@ -8,21 +8,25 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { imageLinkValidation, linkValidation } from "@/lib/links";
 import { skillLevels, TagData } from "@/lib/types/tagTypes";
-import { Dot, Plus, Trash2} from "lucide-react";
+import { Dot, LoaderCircle, Plus, Trash2} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 interface SecondaryDataProps {
-  onProgress : ( value : { tags : TagData[]; github : string; thumbnail : string }) => void;
+  onProgress : ( value : { tags : TagData[]; github : string; thumbnail : string; links: string[] }) => void;
   onRegress : () => void;
 }
 
 export default function SecondaryData({ onProgress, onRegress } : SecondaryDataProps ) {
     const [ draftGithub, setDraftGithub ] = useState("");
     const [ draftThumbnail, setDraftThumbnail ] = useState("");
+    const [ draftLink, setDraftLink ] = useState("");
+    const [ draftLinks, setDraftLinks ] = useState<string[]>([]);
     const [ draftTags, setDraftTags ] = useState<TagData[]>([]);
     const [ githubError, setGithubError ] = useState(false);
     const [ thumbnailError, setThumbnailError ] = useState(false);
+    const [ linkError, setLinkError ] = useState(false);
+    const [ loadingState, setLoadingState ] = useState(false);
 
     const handlePrevious = () => {
         onRegress();
@@ -34,6 +38,7 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
     }
 
     const validateInputs = async () => {
+        setLoadingState(true);
         let check = true;
         const githubLinkValidation = draftGithub.trim() === "" 
             ? true 
@@ -65,6 +70,7 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
             toast.error("At least 1 tag required!");
             check = false;
         }
+        setLoadingState(false);
         return check;
     }
 
@@ -87,9 +93,33 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
     const handleFinish = async () => {
         const validation = await validateInputs();
 
-        if (!validation) 
+        if (!validation) {
             return;
-        onProgress({ tags : draftTags, github : draftGithub, thumbnail : draftThumbnail })
+        }
+        onProgress({ tags : draftTags, github : draftGithub, thumbnail : draftThumbnail, links : draftLinks })
+    }
+
+    const handleAddLink = () => {
+        if (!linkValidation(draftLink)) {
+            setLinkError(true);
+            toast.error("Provide a valid url!");
+            return;
+        }
+        if (draftLinks.includes(draftLink)) {
+            setLinkError(true);
+            toast.error("This link is already listed!");
+            return;
+        }
+        setDraftLinks((prev) => [
+            ...prev,
+            draftLink
+        ]);
+        setDraftLink("");
+    }
+    
+    const handleDeleteLink = (linkIndex : number) => {
+        setDraftLinks((prev) => 
+            prev.filter((_, index) => index !== linkIndex));
     }
     
     return(
@@ -98,7 +128,7 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
                 <CardTitle>
                     <div className="flex flex-row justify-center gap-x-2">
                         <Dot className="opacity-20"/>
-                        <Dot strokeWidth={4}/>
+                        <Dot strokeWidth={5} className="text-button"/>
                         <Dot className="opacity-20"/>
                     </div>
                 </CardTitle>
@@ -114,7 +144,6 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
                         placeholder="Link the github repo of your project" 
                         onChange={(e) => {setDraftGithub(e.target.value); setGithubError(false)}} 
                         maxLength={200}
-                        value={draftGithub}
                         />
                 </div>
                 <div className="flex flex-col h-fit w-full gap-y-2">
@@ -127,8 +156,33 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
                         placeholder="Link an image representing your project" 
                         onChange={(e) => {setDraftThumbnail(e.target.value); setThumbnailError(false)}} 
                         maxLength={200}
-                        value={draftThumbnail}
                         />
+                </div>
+                <div className="flex flex-col h-fit w-full gap-y-2">
+                    <Label>Additional Links &#40;Optional&#41;</Label>
+                    <div className="flex flex-row w-full gap-1">
+                        <Input
+                            className={linkError
+                                ? "border-red-500 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                                : ""} 
+                            type="link" 
+                            placeholder="Add another link (discord, teams, etc.)" 
+                            onChange={(e) => {setDraftLink(e.target.value); setLinkError(false)}} 
+                            maxLength={300}
+                            value={draftLink}
+                            />
+                        <Button variant="ghost" onClick={handleAddLink}>
+                                <Plus />
+                        </Button>
+                    </div>
+                    { draftLinks?.map((link, index) => (
+                        <div className="flex flex-row w-full justify-start items-center" key={index}>
+                            <Button variant="ghost" className="w-6 h-6 p-0" onClick={() => handleDeleteLink(index)}>
+                                <Trash2 className="w-3 h-3 opacity-30" />
+                            </Button>
+                            <p className="text-ellipsis text-sm text-center opacity-50">{link}</p>
+                        </div>
+                    )) }
                 </div>
                 <AddTag />
                 <div className="flex flex-wrap justify-start content-start w-full gap-2">
@@ -145,6 +199,7 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
                 </div>
             </CardContent>
             <CardFooter className="flex flex-row justify-end gap-x-2">
+                <LoaderCircle className={loadingState ? "animate-spin-slow" : "hidden"}/>
                 <Button onClick={handlePrevious} variant="outline">
                     Previous
                 </Button>
