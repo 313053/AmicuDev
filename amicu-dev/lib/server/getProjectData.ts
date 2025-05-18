@@ -1,8 +1,9 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import prisma from "../prisma/prismaClient";
 import { ProjectDashboardData } from "../types/projectTypes";
 
 export async function getProjectData(projectId: string) {
+    const clerk = await clerkClient();
     if (!projectId) 
         throw new Error("No projectId provided!");
 
@@ -41,6 +42,28 @@ export async function getProjectData(projectId: string) {
         }
     });
 
+    const memberCount = await prisma.user_project.count({
+        where: {
+            project: BigInt(projectId)
+        }
+    });
+
+    const creatorId = await prisma.user.findFirst({
+        where: {
+            user_project_user_project_userTouser: {
+                some: {
+                    project: BigInt(projectId),
+                    role: 1
+                }
+            }
+        },
+        select: {
+            user_id: true
+        }
+    })
+
+    const creatorData = await clerk.users.getUser(creatorId?.user_id || "");
+
     const userRole = userProject?.role || 0;
 
     const project : ProjectDashboardData = {
@@ -51,7 +74,9 @@ export async function getProjectData(projectId: string) {
         thumbnail: dbProject.thumbnail,
         github: dbProject.github,
         links: dbProject.links,
-        role : userRole
+        role : userRole,
+        memberCount: memberCount,
+        creator: { id: creatorId?.user_id || "" , username: creatorData.username || "" }
     }
 
     return project;

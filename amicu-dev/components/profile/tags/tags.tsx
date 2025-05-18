@@ -22,7 +22,7 @@ interface TagFormProps {
 // Variable deciding whether different skill levels have a cheesy outline around them
 const skillColors = false;
 
-export default function UserTags({ content, editable, onSave }: TagProps) {
+export default function Tags({ content, editable, onSave }: TagProps) {
     const [draftTags, setDraftTags] = useState(content);
     const [displayedTags, setDisplayedTags] = useState(content);
     const [deletedTags, setDeletedTags] = useState<TagData[]>([]);

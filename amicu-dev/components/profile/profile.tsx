@@ -9,9 +9,9 @@ import { useEffect, useState } from "react"
 import UserBio from "./bio"
 import { UserData, UserLink } from "@/lib/types/profileTypes"
 import UserLinks from "./links"
-import UserTags from "./tags/tags"
 import { TagData, TagPostProps } from "@/lib/types/tagTypes"
 import { useParams } from "next/navigation"
+import Tags from "./tags/tags"
 
 
 
@@ -231,7 +231,7 @@ export default function ProfileCard() {
                 <p className="text-xl sm:text-2xl font-semibold w-full text-left">Skills</p>
                 {!isLoadingTags 
                 ? (
-                    <UserTags 
+                    <Tags 
                         content={userTags || []}
                         editable={isCurrentUser || false}
                         onSave={handleTagsChange}    

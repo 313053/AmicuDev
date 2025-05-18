@@ -15,8 +15,6 @@ export default async function Project({ params } : { params : Promise<{ id: stri
         if(!project)
             throw new Error('failed to fetch project data');
 
-        console.log(project)
-
         return (
             <ProjectDashboard content={project}/>
         )

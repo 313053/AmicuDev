@@ -27,4 +27,6 @@ export interface ProjectDashboardData {
     github : string
     links : string[] | null
     role : number
+    memberCount : number
+    creator : { id : string; username : string }    
 }

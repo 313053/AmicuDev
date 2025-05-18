@@ -44,9 +44,9 @@ export default function RootLayout({
           >
             <SidebarProvider defaultOpen={false}>
               <SidebarInset>
-              <div className="w-full flex flex-col min-h-screen">
+              <div className="w-full flex flex-col h-auto min-h-screen">
                 <Navbar />
-                <main className="mx-4 mt-40 mb-20 md:-mb-96 flex-grow">{children}</main>
+                <main className="mx-4 mt-40 mb-20 md:-mb-96 flex-grow h-auto">{children}</main>
                 <Toaster richColors />
                 <Footer />
               </div>    
