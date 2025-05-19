@@ -3,28 +3,24 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ProjectDashboardData } from "@/lib/types/projectTypes"
 import ProjectTitleEdit from "./projectTitle"
 import { useState } from "react"
-import { AddProjectLink, ProjectLink } from "./projectLinks"
-import { Link, Tag } from "lucide-react"
-import ProjectTags from "./projectTags"
 import { AvatarImage, Avatar, AvatarFallback } from "@/components/ui/avatar"
 import ProjectStats from "./projectStats"
-import ProjectDescriptioEdit from "./projectDescription"
-import ProjectDescriptionEdit from "./projectDescription"
+import AboutTab from "./tabs/aboutTab"
+import MembersTab from "./tabs/membersTab"
 
 interface ProjectDashboardProps {
     content : ProjectDashboardData
 }
 
 export default function ProjectDashboard({ content } : ProjectDashboardProps) {
-    const [ tab, setTab ] = useState(1);
-    const hasLinks = (content.links && content.links.length !== 0);
-    const modPiviledges = content.role === 1 || content.role === 2;
+    const [ tab, setTab ] = useState(0);
+    const modPriviledges = content.role === 1 || content.role === 2;
     return (
         <div className="flex flex-col h-auto min-h-[800px] w-full -mt-10 mb-20 items-center gap-y-2">
-            <Card className="h-auto min-h-10 w-full sm:w-5/6 bg-sidebar border-none">
+            <Card className="h-auto min-h-12 w-full sm:w-5/6 bg-sidebar border-none">
                 <CardContent className="py-2 px-3 sm:px-6 flex flex-col sm:flex-row justify-between items-center relative gap-y-2">
                     <div className="flex flex-row justify-center sm:justify-start items-center content-center gap-x-2 w-full sm:w-1/2 h-auto overflow-hidden">
-                        { modPiviledges && <ProjectTitleEdit projectId={content.id} value={content.title}/>}
+                        { modPriviledges && <ProjectTitleEdit projectId={content.id} value={content.title}/>}
                         <p className="text-3xl text-sidebar-foreground font-semibold text-wrap break-words truncate w-auto min-h-10 max-w-3/4">{content.title}</p>
                     </div>
                     <div className="flex flex-row justify-around sm:justify-end w-full sm:w-1/2 h-full items-center">
@@ -60,66 +56,12 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
             </Card>
             <div className="flex flex-row h-auto min-h-[720px] w-full sm:w-5/6 gap-x-2 items-stretch">
                 <Card className=" w-full">
-                    <CardContent className="flex flex-col gap-6 h-auto w-full pb-10 pt-12">
-                        <div className="flex flex-col h-auto w-full gap-y-3">
-                            <div className="flex flex-row gap-x-2">
-                                { modPiviledges && (
-                                    <ProjectDescriptionEdit projectId={content.id} value={content.title}/>
-                                )}
-                                <p className="text-left text-2xl font-semibold">About This Project</p>
-                            </div>
-                            <p className="text-left text-lg lg:text-xl bg-card-textArea h-auto min-h-80 w-full p-4 whitespace-pre-line rounded-lg">
-                                {content.description}
-                            </p>
-                        </div>
-                        { hasLinks 
-                            ? (
-                                <div className="flex flex-row h-auto w-full gap-2">
-                                    <div className="flex flex-row font-semibold gap-x-1 items-center">
-                                        <Link className="size-5"/>
-                                        <p className="text-xl">Find us here:</p>
-                                    </div>
-                                    { content.links?.map((link, index) => (
-                                        <div className="flex flex-row" key={index}>
-                                            { index !== 0 && (
-                                                <div className="pl-2 border-l border-separator"/>
-                                            )}
-                                            <ProjectLink url={link} />
-                                        </div> 
-                                    ))}
-                                    { content.github && (
-                                        <div className="pl-2 border-l border-separator content-center"><ProjectLink url={content.github}/></div>
-                                        )}
-                                    { modPiviledges && (
-                                        <div className="pl-2 border-l border-separator content-center"><AddProjectLink projectId={content.id} content={content.links || []}/></div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="flex flex-row h-auto w-full gap-2 items-center">
-                                    { content.github && (
-                                        <div className="flex flex-row items-center gap-x-2">
-                                            <div className="flex flex-row font-semibold gap-x-1 items-center">
-                                                <Link className="size-5"/>
-                                                <p className="text-xl">Find us here:</p>
-                                            </div>
-                                            <div className="pr-2 border-r border-separator content-center"><ProjectLink url={content.github}/></div>
-                                        </div>
-                                        )}
-                                    { modPiviledges && (
-                                        <AddProjectLink projectId={content.id} content={content.links || []}/>
-                                    )}
-                                </div>
-                            )
-                        }
-                        <div className="w-full border-b border-separator"/>
-                        <div className="flex flex-col h-auto w-full gap-y-3 z-10">
-                            <div className="flex flex-row font-semibold gap-x-1 items-center">
-                                <Tag className="size-5"/>
-                                <p className="text-xl">Tags</p>
-                            </div>
-                            <ProjectTags projectId={content.id} editable={modPiviledges}/>
-                        </div>
-                    </CardContent>
+                    { tab === 0 && (
+                        <AboutTab content={content} modPriviledges={modPriviledges}/>
+                    )}
+                    { tab === 1 && (
+                        <MembersTab projectId={content.id} modPriviledges={modPriviledges} />
+                    )}
                 </Card>
                 <Card className="w-2/6 min-w-60 bg-sidebar hidden md:block">
                         <CardContent className="flex flex-col h-full w-full items-center p-4 gap-y-6">

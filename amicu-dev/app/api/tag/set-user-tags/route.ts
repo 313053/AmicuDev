@@ -35,7 +35,6 @@ export async function POST(req: Request) {
                         equals : tag.name,
                         mode : 'insensitive'
                     },
-                    complexity: tag.complexity,
                 },
             });
 
@@ -43,7 +42,6 @@ export async function POST(req: Request) {
                 dbTag = await prisma.tag.create({
                     data: {
                         name: tag.name,
-                        complexity: tag.complexity,
                     },
                 });
             }
@@ -51,7 +49,8 @@ export async function POST(req: Request) {
             const existingUserTag = await prisma.user_tag.findFirst({
                 where: {
                     user: user.id,
-                    tag: dbTag.id
+                    tag: dbTag.id,
+                    complexity: tag.complexity ?? 1,
                 },
             });
 
@@ -61,16 +60,18 @@ export async function POST(req: Request) {
                 userTag = await prisma.user_tag.create({
                     data: {
                         user: user.id,
-                        tag: dbTag.id
+                        tag: dbTag.id,
+                        complexity: tag.complexity ?? 1,
                     },
                 });
-            } 
+            }
 
             createdUserTags.push({
                 ...userTag,
                 id : userTag?.id.toString() || "",
                 user: userTag?.user?.toString() || "",
                 tag: userTag?.tag?.toString() || "",
+                complexity: userTag?.complexity
             });
         }
 
@@ -85,7 +86,6 @@ export async function POST(req: Request) {
                         equals : tag.name,
                         mode : 'insensitive'
                     },
-                    complexity : tag.complexity,
                 },
             });
 
@@ -95,7 +95,8 @@ export async function POST(req: Request) {
             const existingUserTag = await prisma.user_tag.findFirst({
                 where: {
                     user: user.id,
-                    tag: dbTag.id
+                    tag: dbTag.id,
+                    complexity: tag.complexity,
                 },
             });
 
@@ -113,6 +114,7 @@ export async function POST(req: Request) {
                 id : deletedUserTag.id.toString() || "",
                 user: deletedUserTag.user?.toString() || "",
                 tag: deletedUserTag.tag?.toString() || "",
+                complexity: deletedUserTag.complexity
             });
 
         }

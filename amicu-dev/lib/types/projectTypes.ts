@@ -30,3 +30,12 @@ export interface ProjectDashboardData {
     memberCount : number
     creator : { id : string; username : string }    
 }
+
+export interface ProjectMemberData {
+    id: string
+    username : string | null
+    imageUrl : string
+    clerkId : string
+    role : number 
+    joined : Date 
+}

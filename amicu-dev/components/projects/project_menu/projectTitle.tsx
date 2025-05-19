@@ -97,7 +97,7 @@ export default function ProjectTitleEdit( { projectId, value } : ProjectTitlePro
                     <SquarePen className="text-sidebar-foreground size-5 opacity-50 hover:scale-110" />
                 </button>
             </DialogTrigger>
-            <DialogContent className="sm:msx-w-xl">
+            <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
                     <DialogTitle>Project Name</DialogTitle>
                     <DialogDescription>Choose a new, unique project name</DialogDescription>

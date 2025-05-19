@@ -8,19 +8,22 @@ export async function GET(
     const userId = (await params).id
 
     try {
-        const userTagData = await prisma.tag.findMany({
+        const userTagData = await prisma.user_tag.findMany({
             where: {
-                user_tag_user_tag_tagTotag : {
-                    some: {
-                        user: userId
+                user: userId,
+            },
+            include: {
+                tag_user_tag_tagTotag: {
+                    select: {
+                        name: true
                     }
                 }
             }
-        });
+        })
 
         const userTags = userTagData.map(tag => ({
-            name : tag?.name || null,
-            complexity : tag?.complexity || null 
+            name : tag?.tag_user_tag_tagTotag?.name ?? null,
+            complexity : tag?.complexity ?? null 
         }))
 
         return new Response(JSON.stringify(userTags), { status: 200 })

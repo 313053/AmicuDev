@@ -58,7 +58,6 @@ export async function POST(req: Request) {
                             equals : tag.name,
                             mode : 'insensitive'
                         },
-                        complexity : tag.complexity
                     },
                 });
 
@@ -66,7 +65,6 @@ export async function POST(req: Request) {
                     dbTag = await tx.tag.create({
                         data: {
                             name: tag.name,
-                            complexity: tag.complexity, 
                         },
                     });
                 }
@@ -74,13 +72,15 @@ export async function POST(req: Request) {
                 await tx.project_tag.create({
                     data: {
                         project: dbProject.id,
-                        tag: dbTag.id
+                        tag: dbTag.id,
+                        complexity: tag.complexity,
                     },
                 });
 
                 createdTags.push({
                     ...dbTag,
-                    id : dbTag.id.toString()
+                    id: dbTag.id.toString(),
+                    complexity: tag.complexity 
                 })
             }
 

@@ -8,19 +8,22 @@ export async function GET(
     const projectId = (await params).id
 
     try {
-        const projectTagData = await prisma.tag.findMany({
+        const projectTagData = await prisma.project_tag.findMany({
             where: {
-                project_tag_project_tag_tagTotag : {
-                    some: {
-                        project: projectId
-                    }
-                }
-            }
+                project: projectId,
+            },
+            include: {
+                tag_project_tag_tagTotag: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
         });
 
         const projectTags = projectTagData.map(tag => ({
-            name : tag?.name || null,
-            complexity : tag?.complexity || null 
+            name : tag?.tag_project_tag_tagTotag?.name ?? null,
+            complexity : tag?.complexity ?? null 
         }))
 
         return NextResponse.json({success : true , data: projectTags})

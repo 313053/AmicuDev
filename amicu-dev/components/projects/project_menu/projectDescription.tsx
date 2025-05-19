@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Save, SquarePen } from "lucide-react";

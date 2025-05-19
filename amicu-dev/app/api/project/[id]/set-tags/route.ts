@@ -32,7 +32,6 @@ export async function POST(
                         equals : tag.name,
                         mode : 'insensitive'
                     },
-                    complexity: tag.complexity,
                 },
             });
 
@@ -40,7 +39,6 @@ export async function POST(
                 dbTag = await prisma.tag.create({
                     data: {
                         name: tag.name,
-                        complexity: tag.complexity,
                     },
                 });
             }
@@ -48,7 +46,8 @@ export async function POST(
             const existingProjectTag = await prisma.project_tag.findFirst({
                 where: {
                     project: projectId,
-                    tag: dbTag.id
+                    tag: dbTag.id,
+                    complexity: tag.complexity,
                 },
             });
 
@@ -58,7 +57,8 @@ export async function POST(
                 projectTag = await prisma.project_tag.create({
                     data: {
                         project: projectId,
-                        tag: dbTag.id
+                        tag: dbTag.id,
+                        complexity: tag.complexity ?? 1,
                     },
                 });
             } 
@@ -68,6 +68,7 @@ export async function POST(
                 id : projectTag?.id.toString() || "",
                 project: projectTag?.project?.toString() || "",
                 tag: projectTag?.tag?.toString() || "",
+                complexity: projectTag?.complexity 
             });
         }
 
@@ -82,7 +83,6 @@ export async function POST(
                         equals : tag.name,
                         mode : 'insensitive'
                     },
-                    complexity : tag.complexity,
                 },
             });
 
@@ -92,7 +92,8 @@ export async function POST(
             const existingProjectTag = await prisma.project_tag.findFirst({
                 where: {
                     project: projectId,
-                    tag: dbTag.id
+                    tag: dbTag.id,
+                    complexity: tag.complexity
                 },
             });
 
@@ -110,6 +111,7 @@ export async function POST(
                 id : deletedProjectTag.id.toString() || "",
                 project: deletedProjectTag.project?.toString() || "",
                 tag: deletedProjectTag.tag?.toString() || "",
+                complexity: deletedProjectTag.complexity,
             });
 
         }

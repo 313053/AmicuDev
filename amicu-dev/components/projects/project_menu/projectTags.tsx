@@ -65,7 +65,7 @@ export default function ProjectTags ({projectId, editable} : ProjectTagProps) {
 
     if (error) {
         return(
-            <p className="text-xl">{error}</p>
+            <p className="text-xl font-semibold">{error}</p>
         )
     }
 
