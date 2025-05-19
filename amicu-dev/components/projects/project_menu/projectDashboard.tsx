@@ -8,6 +8,8 @@ import { Link, Tag } from "lucide-react"
 import ProjectTags from "./projectTags"
 import { AvatarImage, Avatar, AvatarFallback } from "@/components/ui/avatar"
 import ProjectStats from "./projectStats"
+import ProjectDescriptioEdit from "./projectDescription"
+import ProjectDescriptionEdit from "./projectDescription"
 
 interface ProjectDashboardProps {
     content : ProjectDashboardData
@@ -60,7 +62,12 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
                 <Card className=" w-full">
                     <CardContent className="flex flex-col gap-6 h-auto w-full pb-10 pt-12">
                         <div className="flex flex-col h-auto w-full gap-y-3">
-                            <p className="text-left text-2xl font-semibold">About This Project</p>
+                            <div className="flex flex-row gap-x-2">
+                                { modPiviledges && (
+                                    <ProjectDescriptionEdit projectId={content.id} value={content.title}/>
+                                )}
+                                <p className="text-left text-2xl font-semibold">About This Project</p>
+                            </div>
                             <p className="text-left text-lg lg:text-xl bg-card-textArea h-auto min-h-80 w-full p-4 whitespace-pre-line rounded-lg">
                                 {content.description}
                             </p>
@@ -87,8 +94,21 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
                                         <div className="pl-2 border-l border-separator content-center"><AddProjectLink projectId={content.id} content={content.links || []}/></div>
                                     )}
                                 </div>
-                            ) : modPiviledges && (
-                                <></>
+                            ) : (
+                                <div className="flex flex-row h-auto w-full gap-2 items-center">
+                                    { content.github && (
+                                        <div className="flex flex-row items-center gap-x-2">
+                                            <div className="flex flex-row font-semibold gap-x-1 items-center">
+                                                <Link className="size-5"/>
+                                                <p className="text-xl">Find us here:</p>
+                                            </div>
+                                            <div className="pr-2 border-r border-separator content-center"><ProjectLink url={content.github}/></div>
+                                        </div>
+                                        )}
+                                    { modPiviledges && (
+                                        <AddProjectLink projectId={content.id} content={content.links || []}/>
+                                    )}
+                                </div>
                             )
                         }
                         <div className="w-full border-b border-separator"/>
