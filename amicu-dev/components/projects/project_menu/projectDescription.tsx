@@ -87,7 +87,7 @@ export default function ProjectDescriptionEdit( { projectId, value } : ProjectDe
         <Dialog>
             <DialogTrigger asChild onClick={() => setDraftDescription(value)}>
                 <button>
-                    <SquarePen className="text-sidebar-foreground size-5 opacity-50 hover:scale-110" />
+                    <SquarePen className="size-5 opacity-50 hover:scale-110" />
                 </button>
             </DialogTrigger>
             <DialogContent className="sm:msx-w-xl">

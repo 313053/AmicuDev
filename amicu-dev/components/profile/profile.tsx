@@ -161,12 +161,12 @@ export default function ProfileCard() {
         return(
             <Card className="w-full sm:w-[520px] md:w-[700px] lg:w-[760px] min-h-[760px] flex flex-col items-center">
                 <CardContent className="flex flex-col items-center w-3/4 pt-6">
-                    <div className="flex flex-row w-full justify-evenly">
-                        <Skeleton className="h-28 w-28 md:h-40 md:w-40 rounded-full" />
+                    <div className="flex flex-row w-full min-w-72 justify-start sm:justify-evenly gap-x-2">
+                        <Skeleton className="h-24 w-24 sm:h-28 sm:w-28 md:h-40 md:w-40 rounded-full" />
                         <div className="flex flex-col justify-center h-full w-1/2 gap-y-2">
-                            <Skeleton className="h-7 w-44" />
-                            <Skeleton className="h-5 w-32" />
-                            <Skeleton className="h-6 w-36" />
+                            <Skeleton className="h-5 w-36 sm:h-7 sm:w-44 md:h-7 md:w-52 lg:h-8 lg:w-60" />
+                            <Skeleton className="h-3 w-28 sm:h-5 sm:w-32 md:h-6 md:w-36 lg:h-7 lg:w-40" />
+                            <Skeleton className="h-4 w-32 sm:h-6 sm:w-36 md:w-44 lg:w-48" />
                         </div>
                     </div>
                     <div className="space-y-6 my-6 w-full flex flex-col items-center">
@@ -194,18 +194,18 @@ export default function ProfileCard() {
     }
 
     return(
-        <Card className="w-full sm:w-[540px] md:w-[700px] lg:w-[760px] h-fit flex flex-col items-center pb-7 relative">
-            <div className={`absolute right-8 top-8 opacity-50 ${isCurrentUser ? "" : "hidden"} `}>
-                <Settings className="hover:animate-spin-slow active:scale-90 text-subtext w-8 h-8" onClick={redirectToUserProfile}/>
+        <Card className="w-full sm:w-[540px] md:w-[700px] lg:w-[760px] h-auto flex flex-col items-center pb-7 relative">
+            <div className={`absolute right-4 top-4 opacity-50 ${isCurrentUser ? "" : "hidden"} `}>
+                <Settings className="hover:animate-spin-slow active:scale-90 text-subtext w-7 h-7 sm:w-8 sm:h-8" onClick={redirectToUserProfile}/>
             </div>
-            <CardHeader className="flex flex-row flex-shrink items-center justify-evenly border-b w-3/4 pb-4 mb-4 gap-x-2">
-                <Avatar className="border-2 border-subtext h-28 w-28 md:h-40 md:w-40">
+            <CardHeader className="flex flex-row flex-wrap items-center justify-start sm:justify-evenly border-b w-3/4 min-w-72 pb-4 px-0 mb-4 gap-x-2">
+                <Avatar className="border-2 border-subtext h-24 w-24 sm:h-28 sm:w-28 md:h-40 md:w-40">
                     <AvatarImage src={user?.imageUrl} alt={user?.username || "User"} />
                     <AvatarFallback><User /></AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col items-start justify-center md:items-start min-w-fit w-1/2 h-full">
-                    <CardTitle className="text-lg md:text-2xl max-w-full font-bold uppercase">{user?.username}</CardTitle>
-                    <CardDescription className="italic">{user?.emailAddress}</CardDescription> 
+                <div className="flex flex-col items-start justify-center md:items-start w-auto h-auto">
+                    <CardTitle className="text-md sm:text-lg md:text-2xl lg:text-3xl max-w-full font-bold uppercase break-words">{user?.username}</CardTitle>
+                    <CardDescription className="italic w-full md:text-lg" title={user?.username}>{user?.emailAddress}</CardDescription> 
                     <UserLinks
                         content={user?.links || null}
                         editable={isCurrentUser || false}

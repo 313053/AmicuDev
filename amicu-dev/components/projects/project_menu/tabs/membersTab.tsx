@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ProjectMemberData } from "@/lib/types/projectTypes";
 import { Ban, User } from "lucide-react";
 import Link from "next/link";
@@ -48,7 +49,18 @@ export default function MembersTab({ projectId, modPriviledges } : MembersTabPro
         fetchProjectUserData();
     }, [projectId]);
 
-    if (loadingState)
+    if (loadingState) {
+        return(
+            <CardContent className="flex flex-col gap-6 h-auto w-full pb-10 pt-8">
+                <p className="text-left text-2xl font-semibold">Project Members</p>
+                <div className="flex flex-col md:flex-row md:flex-wrap justify-start content-start gap-y-4 gap-x-8 h-auto w-full">
+                    { Array.from({ length: 5 }).map((_, index) => (
+                        <Skeleton key={index} className="flex flex-row w-full md:w-[205.6px] h-[76px] rounded-xl" />
+                    ))}
+                </div>
+            </CardContent>
+        )
+    }
 
     if (error) {
         return(

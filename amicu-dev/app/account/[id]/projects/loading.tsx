@@ -4,9 +4,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function MyProjectsLoading() {
     return(
         <div className="flex flex-col md:flex-row justify-center gap-x-2 -mt-10">
-        <Card className="w-full h-fit max-w-4xl lg:w-5/6 relative">
+        <Card className="w-full h-fit min-h-[420.8px] max-w-5xl lg:w-5/6 relative">
             <CardContent className="h-fit">
-                <div className="min-h-96 h-fit flex flex-col items-center p-2">
+                <div className="min-h-96 flex flex-col items-center p-2">
                     <div className="absolute top-0 h-11 w-full bg-sidebar rounded-t-xl z-0" />
                     <div className="flex flex-row relative z-10">
                         <p className="text-xl text-sidebar-foreground font-semibold blur-sm">Username</p>
@@ -26,7 +26,7 @@ export default function MyProjectsLoading() {
                 </div>
             </CardContent>
         </Card>
-        <Card className="w-72 max-w-4xl hidden lg:flex lg:flex-col relative bg-sidebar shadow-2xl">
+        <Card className="min-w-64 hidden lg:flex lg:flex-col relative bg-sidebar shadow-2xl">
             <CardContent>
                 <div className="h-96 flex flex-col items-center p-4 gap-y-4">
                     <Skeleton className="h-40 w-40 rounded-full bg-white/10" />

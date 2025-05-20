@@ -28,25 +28,27 @@ export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
             </div>
             { hasLinks 
                 ? (
-                    <div className="flex flex-row h-auto w-full gap-2">
+                    <div className="flex flex-col h-auto w-full gap-2">
                         <div className="flex flex-row font-semibold gap-x-1 items-center">
                             <Link className="size-5"/>
                             <p className="text-xl">Find us here:</p>
                         </div>
-                        { content.links?.map((link, index) => (
-                            <div className="flex flex-row" key={index}>
-                                { index !== 0 && (
-                                    <div className="pl-2 border-l border-separator"/>
+                        <div className="flex flex-row w-full gap-2">
+                            { content.links?.map((link, index) => (
+                                <div className="flex flex-row" key={index}>
+                                    { index !== 0 && (
+                                        <div className="pl-2 border-l border-separator"/>
+                                    )}
+                                    <ProjectLink url={link} />
+                                </div> 
+                            ))}
+                            { content.github && (
+                                <div className="pl-2 border-l border-separator content-center"><ProjectLink url={content.github}/></div>
                                 )}
-                                <ProjectLink url={link} />
-                            </div> 
-                        ))}
-                        { content.github && (
-                            <div className="pl-2 border-l border-separator content-center"><ProjectLink url={content.github}/></div>
+                            { modPriviledges && (
+                                <div className="pl-2 border-l border-separator content-center"><AddProjectLink projectId={content.id} content={content.links || []}/></div>
                             )}
-                        { modPriviledges && (
-                            <div className="pl-2 border-l border-separator content-center"><AddProjectLink projectId={content.id} content={content.links || []}/></div>
-                        )}
+                        </div>
                     </div>
                 ) : (
                     <div className="flex flex-row h-auto w-full gap-2 items-center">
