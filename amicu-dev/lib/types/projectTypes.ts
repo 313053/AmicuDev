@@ -39,3 +39,42 @@ export interface ProjectMemberData {
     role : number 
     joined : Date 
 }
+
+export interface ProjectGithubData {
+    name : string
+    owner : {
+        login : string
+        avatarUrl : string
+        profileUrl : string
+    }
+    url : string
+    createdAt : Date
+    updatedAt : Date
+    stars : number
+    watchers : number
+    forks : number
+    issues : number
+    commits : {
+        author : {
+            login : string
+            profileUrl : string
+        }
+        message : string
+        date : Date
+        url : string
+    }[]
+}
+
+export interface GitHubAPICommit {
+  author: {
+    login: string;
+    html_url: string;
+  } | null;
+  commit: {
+    message: string;
+    author: {
+      date: string;
+    };
+  };
+  html_url: string;
+}

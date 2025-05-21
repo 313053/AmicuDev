@@ -93,7 +93,7 @@ export default function ProjectTitleEdit( { projectId, value } : ProjectTitlePro
     return(
         <Dialog>
             <DialogTrigger asChild onClick={() => setDraftTitle(value)}>
-                <button>
+                <button className="content-center h-full">
                     <SquarePen className="text-sidebar-foreground size-5 opacity-50 hover:scale-110" />
                 </button>
             </DialogTrigger>

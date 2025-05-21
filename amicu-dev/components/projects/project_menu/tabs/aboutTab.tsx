@@ -14,7 +14,7 @@ export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
     const hasLinks = (content.links && content.links.length !== 0);
 
     return (
-        <CardContent className="flex flex-col gap-6 h-auto w-full pb-10 pt-8">
+        <CardContent className="flex flex-col gap-10 h-auto w-full pb-10 pt-8">
             <div className="flex flex-col h-auto w-full gap-y-3">
                 <div className="flex flex-row gap-x-2">
                     { modPriviledges && (

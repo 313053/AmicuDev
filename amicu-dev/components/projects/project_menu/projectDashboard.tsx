@@ -7,6 +7,7 @@ import { AvatarImage, Avatar, AvatarFallback } from "@/components/ui/avatar"
 import ProjectStats from "./projectStats"
 import AboutTab from "./tabs/aboutTab"
 import MembersTab from "./tabs/membersTab"
+import GithubTab from "./tabs/githubTab"
 
 interface ProjectDashboardProps {
     content : ProjectDashboardData
@@ -17,11 +18,14 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
     const modPriviledges = content.role === 1 || content.role === 2;
     return (
         <div className="flex flex-col h-auto min-h-[800px] w-full -mt-10 mb-20 items-center gap-y-2">
-            <Card className="h-auto min-h-12 w-full sm:w-5/6 bg-sidebar border-none">
+            <Card className="h-auto min-h-20 w-full sm:w-5/6 bg-sidebar border-none content-center">
                 <CardContent className="py-2 px-3 sm:px-6 flex flex-col sm:flex-row justify-between items-center relative gap-y-2">
                     <div className="flex flex-row justify-center sm:justify-start items-center content-center gap-x-2 w-full sm:w-1/2 h-auto overflow-hidden">
                         { modPriviledges && <ProjectTitleEdit projectId={content.id} value={content.title}/>}
-                        <p className="text-3xl text-sidebar-foreground font-semibold text-wrap break-words truncate w-auto min-h-10 max-w-3/4">{content.title}</p>
+                        <p className="text-3xl lg:text-4xl text-sidebar-foreground font-semibold text-wrap break-words truncate w-auto h-auto min-h-12 max-w-3/4"
+                            title={content.title}>
+                            {content.title}
+                        </p>
                     </div>
                     <div className="flex flex-row justify-around sm:justify-end w-full sm:w-1/2 h-full items-center">
                         <button className={
@@ -62,6 +66,9 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
                     { tab === 1 && (
                         <MembersTab projectId={content.id} modPriviledges={modPriviledges} />
                     )}
+                    { tab === 2 && (
+                        <GithubTab projectId={content.id} repoLink={content.github} modPriviledges={modPriviledges} />
+                    ) }
                 </Card>
                 <Card className="w-2/6 min-w-60 bg-sidebar hidden md:block">
                         <CardContent className="flex flex-col h-full w-full items-center p-4 gap-y-6">
