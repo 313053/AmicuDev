@@ -48,7 +48,7 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
             : await imageLinkValidation(draftThumbnail);
         const githubRepoValidation = draftGithub.trim() === "" || !githubLinkValidation
             ? true
-            : await checkGithub();
+            : await checkGithub(draftGithub);
         const tagValidation = draftTags.length > 0;
 
         if (!githubLinkValidation) {
@@ -72,22 +72,6 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
         }
         setLoadingState(false);
         return check;
-    }
-
-    const checkGithub = async () => {
-        try {
-            const url = new URL(draftGithub);
-            const [ owner, repo ] = url.pathname.slice(1).split('/');
-
-            if (!owner || !repo)
-                return false;
-
-            const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-
-            return response.ok
-        } catch {
-            return false;
-        }
     }
 
     const handleFinish = async () => {
@@ -290,5 +274,21 @@ export default function SecondaryData({ onProgress, onRegress } : SecondaryDataP
                 </div>
             </div>
         )
+    }
+}
+
+export const checkGithub = async (draftGithub : string) => {
+    try {
+        const url = new URL(draftGithub);
+        const [ owner, repo ] = url.pathname.slice(1).split('/');
+
+        if (!owner || !repo)
+            return false;
+
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+
+        return response.ok
+    } catch {
+        return false;
     }
 }

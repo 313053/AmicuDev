@@ -1,9 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { GitHubAPICommit, ProjectGithubData } from "@/lib/types/projectTypes";
 import { CircleDot, Clock, Dot, Download, Eye, GitFork, Github, LucideIcon, Star, User } from "lucide-react";
 import { useEffect, useState } from "react";
+import ProjectRepoEdit from "../projectRepo";
 
 
 interface githubTabProps {
@@ -21,15 +23,17 @@ interface StatisticProps {
 
 export default function GithubTab({ projectId, repoLink, modPriviledges } : githubTabProps) {
     const [ loadingState, setLoadingState ] = useState(false);
-    //const [ error, setError ] = useState<string | null>(null);
-    //const [ noRepo, setNoRepo ] = useState(repoLink.trim() === "");
+    const [ error, setError ] = useState<string | null>(null);
+    const [ noRepo, setNoRepo ] = useState(repoLink.trim() === "");
     const [ repoData, setRepoData ] = useState<ProjectGithubData | null>(null);
     const [ downloadUrl, setDownloadUrl ] = useState("");
     const [ ghubDesktopUrl, setGhubDesktopUrl ] = useState("");
 
     const fetchRepoData = async () => {
-        if(!repoLink)
+        if(!repoLink){
+            setNoRepo(true);
             return;
+        }
 
         try {
             setLoadingState(true);
@@ -83,10 +87,12 @@ export default function GithubTab({ projectId, repoLink, modPriviledges } : gith
                     url: commit.html_url,
                 })),
             };
+            setNoRepo(false);
             setRepoData(formattedData);
             console.log(repoData);
         } catch (error) {
             console.error(error);
+            setError(error instanceof Error ? error.message : "Unknown error occured");
         } finally {
             setLoadingState(false);
         }
@@ -97,14 +103,68 @@ export default function GithubTab({ projectId, repoLink, modPriviledges } : gith
         fetchRepoData();
     }, [repoLink]);
 
+
+    if (loadingState) {
+        return(
+            <CardContent className="flex flex-col gap-6 h-full w-full pb-10 pt-8">
+                <div className="flex flex-col gap-1 px-0">
+                    <Skeleton className="w-1/3 h-10" />
+                    <Skeleton className="w-1/4 h-8" />
+                </div>
+                <div className="flex flex-col h-auto w-full gap-2">
+                    <Skeleton className="w-1/3 h-9" />
+                    <Skeleton className="w-full h-60" />
+                    <div className="flex flex-col lg:grid lg:grid-cols-4 w-full gap-6 px-6 sm:px-0">
+                        <Skeleton className="lg:col-span-1 lg:justify-self-center w-full lg:w-2/3 h-5" />
+                        <Skeleton className="lg:col-span-1 lg:justify-self-center w-full lg:w-2/3 h-5" />
+                        <Skeleton className="lg:col-span-1 lg:justify-self-center w-full lg:w-2/3 h-5" />
+                        <Skeleton className="lg:col-span-1 lg:justify-self-center w-full lg:w-2/3 h-5" />
+                    </div>
+                </div>
+                <div className="grid grid-rows-2 sm:grid-cols-2 w-full h-32 gap-y-2 mt-0 sm:mt-10">
+                    <Skeleton className="row-span-1 sm:col-span-1 justify-self-center w-4/6 h-12 sm:w-32" />
+                    <Skeleton className="row-span-1 sm:col-span-1 justify-self-center w-4/6 h-12 sm:w-32" />
+                </div>
+            </CardContent>
+        )
+    }
+
+    if (error) {
+        return(
+            <CardContent className="flex flex-col gap-6 h-full w-full pb-10 pt-8">
+                <div className="h-full w-full flex-row justify-center items-center">
+                    <p className="text-2xl text-center font-semibold">{error}</p>
+                </div>
+            </CardContent>
+        )
+    }
+
+    if (noRepo) {
+        return (
+            <CardContent className="flex flex-col gap-6 h-full w-full pb-10 pt-8 justify-center">
+                <div className="h-full w-full flex-col justify-center items-center mt-10 sm:mt-32">
+                    <p className="text-2xl text-center font-semibold">This project has no connected github repository</p>
+                    { modPriviledges && (
+                        <ProjectRepoEdit projectId={projectId} value={repoLink} noRepo={true}/>
+                    )}
+                </div>
+            </CardContent>
+        )
+    }
+
     return (
         <CardContent className="flex flex-col gap-10 h-auto w-full pb-10 pt-8 px-0 sm:px-6">
             <div className="flex flex-col gap-1 px-6 sm:px-0">
-                <p className="text-left text-3xl md:text-4xl font-semibold">Repo:&nbsp;
-                    <a href={repoLink} target="_blank" rel="noopener noreferrer" className="hover:opacity-70">
-                        {repoData?.name}
-                    </a>
-                </p>
+                <div className="flex flex-row gap-2 items-center">
+                    { modPriviledges && (
+                        <ProjectRepoEdit projectId={projectId} value={repoLink} noRepo={false}/>
+                    )}
+                    <p className="text-left text-3xl md:text-4xl font-semibold">Repo:&nbsp;
+                        <a href={repoLink} target="_blank" rel="noopener noreferrer" className="hover:opacity-70">
+                            {repoData?.name}
+                        </a>
+                    </p>
+                </div>
                 <div className="flex flex-row gap-1 items-center text-subtext font-semibold">
                     <a href={repoData?.owner.profileUrl} target="_blank" rel="noopener noreferrer">
                         <Avatar className="w-6 h-6 border border-separator hover:opacity-70">
@@ -135,7 +195,7 @@ export default function GithubTab({ projectId, repoLink, modPriviledges } : gith
                     <div className="flex flex-col h-auto w-full divide-y-2 divide-card-border md:text-lg">
                         { repoData?.commits.map((commit, index) => (
                             <a href={commit.url} target="_blank" rel="noopener noreferrer" key={index} className="w-full">
-                                <div className="grid grid-cols-4 h-auto w-full text-subtext px-2 sm:px-4 py-1 hover:text-primary hover:bg-card">
+                                <div className="grid grid-cols-4 h-auto w-full text-subtext px-2 sm:px-4 py-2 hover:text-primary hover:bg-card">
                                     <p className="col-span-1 truncate text-left">{commit.author.login}</p>
                                     <p className="col-span-2 truncate text-left" title={commit.message}>{commit.message}</p>
                                     <p className="col-span-1 truncate text-right">{commit.date.toLocaleDateString()}</p>
@@ -151,20 +211,20 @@ export default function GithubTab({ projectId, repoLink, modPriviledges } : gith
                     <Statistic name="Issues" data={repoData?.issues || 0} icon={CircleDot} />
                 </div>
             </div>
-                <div className="grid grid-rows-2 sm:grid-cols-2 w-full h-auto z-10 gap-y-2 mt-0 sm:mt-10">
-                    <a href={downloadUrl} target="_blank" rel="noopener noreferrer" className="row-span-1 sm:col-span-1 justify-self-center w-4/6 sm:w-auto">
-                        <Button className="w-full sm:w-auto">
-                            <Download />
-                            Download zip
-                        </Button>
-                    </a>
-                    <a href={ghubDesktopUrl} target="_blank" rel="noopener noreferrer" className="row-span-1 sm:col-span-1 justify-self-center w-4/6 sm:w-auto">
-                        <Button className="w-full sm:w-auto">
-                            <Github />
-                            Github Desktop
-                        </Button>
-                    </a>
-                </div>
+            <div className="grid grid-rows-2 sm:grid-cols-2 w-full h-auto z-10 gap-y-2 mt-0 sm:mt-10">
+                <a href={downloadUrl} target="_blank" rel="noopener noreferrer" className="row-span-1 sm:col-span-1 justify-self-center w-4/6 sm:w-auto">
+                    <Button className="w-full sm:w-auto">
+                        <Download />
+                        Download zip
+                    </Button>
+                </a>
+                <a href={ghubDesktopUrl} target="_blank" rel="noopener noreferrer" className="row-span-1 sm:col-span-1 justify-self-center w-4/6 sm:w-auto">
+                    <Button className="w-full sm:w-auto">
+                        <Github />
+                        Github Desktop
+                    </Button>
+                </a>
+            </div>
         </CardContent>
     )
 }
