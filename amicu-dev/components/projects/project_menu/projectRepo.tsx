@@ -98,7 +98,7 @@ export default function ProjectRepoEdit( { projectId, value, noRepo } : ProjectR
                                 <p className="text-lg font-semibold p-4 bg-button rounded-xl text-primary-foreground w-fit">Connect to GitHub</p>
                             </div>
                         ) : (
-                            <SquarePen className="text-sidebar-foreground size-5 opacity-50 hover:scale-110" />
+                            <SquarePen className="size-5 opacity-50 hover:scale-110" />
                         )}
                 </button>
             </DialogTrigger>

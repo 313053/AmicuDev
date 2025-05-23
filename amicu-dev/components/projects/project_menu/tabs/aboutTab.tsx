@@ -4,6 +4,7 @@ import { Link, Tag } from "lucide-react";
 import { AddProjectLink, ProjectLink } from "../projectLinks";
 import ProjectTags from "../projectTags";
 import { ProjectDashboardData } from "@/lib/types/projectTypes";
+import ProjectJoin from "../projectJoin";
 
 interface AboutTabProps {
     content: ProjectDashboardData
@@ -22,7 +23,7 @@ export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
                     )}
                     <p className="text-left text-2xl font-semibold">About This Project</p>
                 </div>
-                <p className="text-left text-lg lg:text-xl bg-card-textArea h-auto min-h-80 w-full p-4 whitespace-pre-line rounded-lg">
+                <p className="text-left text-md sm:text-lg lg:text-xl bg-card-textArea h-auto min-h-80 w-full p-4 whitespace-pre-line rounded-lg">
                     {content.description}
                 </p>
             </div>
@@ -33,7 +34,7 @@ export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
                             <Link className="size-5"/>
                             <p className="text-xl">Find us here:</p>
                         </div>
-                        <div className="flex flex-row w-full gap-2">
+                        <div className="flex flex-row w-full gap-2 z-10">
                             { content.links?.map((link, index) => (
                                 <div className="flex flex-row" key={index}>
                                     { index !== 0 && (
@@ -51,7 +52,7 @@ export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex flex-row h-auto w-full gap-2 items-center">
+                    <div className="flex flex-row h-auto w-full gap-2 items-center z-10">
                         { content.github && (
                             <div className="flex flex-row items-center gap-x-2">
                                 <div className="flex flex-row font-semibold gap-x-1 items-center">
@@ -74,6 +75,10 @@ export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
                     <p className="text-xl">Tags</p>
                 </div>
                 <ProjectTags projectId={content.id} editable={modPriviledges}/>
+            </div>
+
+            <div className="flex justify-center w-full border-t border-separator lg:hidden py-10">
+                <ProjectJoin projectId={content.id} />
             </div>
         </CardContent>
     )

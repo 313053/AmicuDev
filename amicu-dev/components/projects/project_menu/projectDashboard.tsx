@@ -8,6 +8,7 @@ import ProjectStats from "./projectStats"
 import AboutTab from "./tabs/aboutTab"
 import MembersTab from "./tabs/membersTab"
 import GithubTab from "./tabs/githubTab"
+import ProjectJoin from "./projectJoin"
 
 interface ProjectDashboardProps {
     content : ProjectDashboardData
@@ -16,6 +17,7 @@ interface ProjectDashboardProps {
 export default function ProjectDashboard({ content } : ProjectDashboardProps) {
     const [ tab, setTab ] = useState(0);
     const modPriviledges = content.role === 1 || content.role === 2;
+    const interloper = content.role === 0;
     return (
         <div className="flex flex-col h-auto min-h-[800px] w-full -mt-10 mb-20 items-center gap-y-2">
             <Card className="h-auto min-h-20 w-full sm:w-5/6 bg-sidebar border-none content-center">
@@ -41,18 +43,22 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
                                 `p-2 text-sidebar-foreground font-semibold rounded-lg w-1/3 sm:w-auto
                                 ${tab === 1 
                                     ? "border-b-2 border-sidebar-foreground rounded-b-none" 
-                                    : "hover:bg-sidebar-accent opacity-50 hover:opacity-100"}`
+                                    : `opacity-50 ${!interloper && "hover:bg-sidebar-accent hover:opacity-100"}`}`
                                 }
-                                onClick={() => tab !== 1 && setTab(1)}>
+                                onClick={() => tab !== 1 && setTab(1)}
+                                disabled={interloper}
+                                title={interloper ? "MEMBERS ONLY" : ""}>
                             Members
                         </button>
                         <button className={
                                 `p-2 text-sidebar-foreground font-semibold rounded-lg w-1/3 sm:w-auto
                                 ${tab === 2 
                                     ? "border-b-2 border-sidebar-foreground rounded-b-none" 
-                                    : "hover:bg-sidebar-accent opacity-50 hover:opacity-100"}`
+                                    : `opacity-50 ${!interloper && "hover:bg-sidebar-accent hover:opacity-100"}`}`
                                 }
-                                onClick={() => tab !== 2 && setTab(2)}>
+                                onClick={() => tab !== 2 && setTab(2)}
+                                disabled={interloper}
+                                title={interloper ? "MEMBERS ONLY" : ""}>
                             Github
                         </button>
                     </div>
@@ -70,7 +76,7 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
                         <GithubTab projectId={content.id} repoLink={content.github} modPriviledges={modPriviledges} />
                     ) }
                 </Card>
-                <Card className="w-2/6 min-w-60 bg-sidebar hidden md:block">
+                <Card className="w-2/6 min-w-60 bg-sidebar hidden lg:block">
                         <CardContent className="flex flex-col h-full w-full items-center p-4 gap-y-6">
                             <Avatar className="bg-sidebar border-2 border-sidebar-subtext rounded-lg shadow-lg h-40 w-40">
                                 <AvatarImage src={content.thumbnail} alt={content.title} />
@@ -81,7 +87,12 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
                                 </AvatarFallback>
                             </Avatar>
                             <div className="border-b border-sidebar-foreground opacity-10 w-full"/>
-                            <ProjectStats memberCount={content.memberCount} creator={content.creator} github={content.github} creationDate={content.createdAt}/>
+                            <ProjectStats 
+                                memberCount={content.memberCount} creationDate={content.createdAt}
+                                github={content.github} creator={content.creator} interloper={interloper}/>
+                            { interloper && (
+                                <ProjectJoin projectId={content.id} />
+                            )}
                         </CardContent>
                 </Card>
             </div>

@@ -9,11 +9,13 @@ export default function MyProjectsLoading() {
                 <div className="min-h-96 flex flex-col items-center p-2">
                     <div className="absolute top-0 h-11 w-full bg-sidebar rounded-t-xl z-0" />
                     <div className="flex flex-row relative z-10">
-                        <p className="text-xl text-sidebar-foreground font-semibold blur-sm">Username</p>
-                        <p className="text-xl text-sidebar-foreground font-semibold">&apos; projects</p>
+                        <Skeleton className="h-7 w-40 bg-separator" />
+                    </div>
+                    <div className="flex flex-row w-full justify-start p-6">
+                        <Skeleton className="h-10 w-48"/>
                     </div>
                     <div className="w-full h-[480px] flex flex-wrap gap-4 justify-start sm:justify-start content-start overflow-y-auto py-6">
-                        {Array.from({ length : 2 }).map((_,i) => (
+                        {Array.from({ length : 9 }).map((_,i) => (
                             <div className="flex flex-row w-[250px] h-14 items-center justify-center gap-x-4" key={i}>
                                 <Skeleton className="w-16 h-full rounded-3xl" />
                                 <div className="w-5/6 h-full grid grid-rows-2 gap-y-2">

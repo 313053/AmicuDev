@@ -30,7 +30,7 @@ function Navbar() {
                     </Link>
                 </div>
                 <Searchbar />
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                     <SignedIn>
                         <Notifications />
                         <Personal />

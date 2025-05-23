@@ -28,7 +28,7 @@ export async function POST(
         });
 
         return NextResponse.json({ success: true, data: updatedProject.description });
-    }   catch (error) {
+    } catch (error) {
         console.error("Error updating project description:", error);
         return new NextResponse("Internal Server Error", {status: 500});
     }

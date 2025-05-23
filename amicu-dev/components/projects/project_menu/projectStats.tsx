@@ -6,9 +6,10 @@ interface ProjectStatsProps {
     creator : {id : string; username : string}
     github : string
     creationDate : Date
+    interloper : boolean
 }
 
-export default function ProjectStats({ memberCount, creator, github, creationDate } : ProjectStatsProps ) {
+export default function ProjectStats({ memberCount, creator, github, creationDate, interloper } : ProjectStatsProps ) {
     
     return (
         <div className="flex flex-col items-center w-full gap-y-3 text-sidebar-foreground opacity-50">
@@ -36,10 +37,13 @@ export default function ProjectStats({ memberCount, creator, github, creationDat
                 { github.trim() === "" 
                 ? (
                     <p className="text-right truncate w-1/2">no</p>  
-                ) : (
-                    <a href={github} target="_blank" rel="noopener noreferrer" title="github.com" className="text-right truncate w-1/2 hover:underline">
-                        <p>yes</p>
-                    </a>
+                ) : interloper 
+                    ? (
+                        <p title="MEMBERS ONLY">yes</p>
+                    ) : (
+                        <a href={github} target="_blank" rel="noopener noreferrer" title="github.com" className="text-right truncate w-1/2 hover:underline" >
+                            <p>yes</p>
+                        </a>
                 )}
             </div>
             <div className="flex flex-row justify-between w-full">

@@ -8,39 +8,18 @@ datasource db {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model conversation {
-  id                                                             BigInt              @id @unique @default(autoincrement())
-  created_at                                                     DateTime            @default(now()) @db.Timestamptz(6)
-  message_message_conversationToconversation                     message[]           @relation("message_conversationToconversation")
-  project_project_conversationToconversation                     project[]           @relation("project_conversationToconversation")
-  user_conversation_user_conversation_conversationToconversation user_conversation[] @relation("user_conversation_conversationToconversation")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model message {
-  id                                              BigInt        @id @unique @default(autoincrement())
-  created_at                                      DateTime      @default(now()) @db.Timestamptz(6)
-  contents                                        String?       @default("")
-  sender                                          BigInt?
-  conversation                                    BigInt?
-  conversation_message_conversationToconversation conversation? @relation("message_conversationToconversation", fields: [conversation], references: [id], onDelete: Cascade)
-  user                                            user?         @relation(fields: [sender], references: [id], onDelete: SetDefault)
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model project {
-  id                                              BigInt         @id @unique @default(autoincrement())
-  created_at                                      DateTime       @default(now()) @db.Timestamptz(6)
-  description                                     String         @default("")
-  title                                           String         @default("")
-  thumbnail                                       String         @default("")
-  conversation                                    BigInt?
-  github                                          String         @default("")
-  links                                           String[]
-  conversation_project_conversationToconversation conversation?  @relation("project_conversationToconversation", fields: [conversation], references: [id], onDelete: SetDefault)
-  project_tag_project_tag_projectToproject        project_tag[]  @relation("project_tag_projectToproject")
-  user_project_user_project_projectToproject      user_project[] @relation("user_project_projectToproject")
-  waiting_list_waiting_list_projectToproject      waiting_list[] @relation("waiting_list_projectToproject")
+  id                                         BigInt         @id @unique @default(autoincrement())
+  created_at                                 DateTime       @default(now()) @db.Timestamptz(6)
+  description                                String         @default("")
+  title                                      String         @default("")
+  thumbnail                                  String         @default("")
+  github                                     String         @default("")
+  links                                      String[]
+  notification_notification_projectToproject notification[] @relation("notification_projectToproject")
+  project_tag_project_tag_projectToproject   project_tag[]  @relation("project_tag_projectToproject")
+  user_project_user_project_projectToproject user_project[] @relation("user_project_projectToproject")
+  waiting_list_waiting_list_projectToproject waiting_list[] @relation("waiting_list_projectToproject")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -53,26 +32,16 @@ model tag {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model user {
-  id                                             BigInt              @id @unique @default(autoincrement())
-  created_at                                     DateTime            @default(now()) @db.Timestamptz(6)
-  user_id                                        String?             @unique @default(dbgenerated("requesting_user_id()"))
-  bio                                            String?             @default("")
-  links                                          Json[]
-  message                                        message[]
-  user_conversation_user_conversation_userTouser user_conversation[] @relation("user_conversation_userTouser")
-  user_project_user_project_userTouser           user_project[]      @relation("user_project_userTouser")
-  user_tag_user_tag_userTouser                   user_tag[]          @relation("user_tag_userTouser")
-  waiting_list_waiting_list_userTouser           waiting_list[]      @relation("waiting_list_userTouser")
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model user_conversation {
-  id                                                        BigInt        @id @unique @default(autoincrement())
-  created_at                                                DateTime      @default(now()) @db.Timestamptz(6)
-  user                                                      BigInt?
-  conversation                                              BigInt?
-  conversation_user_conversation_conversationToconversation conversation? @relation("user_conversation_conversationToconversation", fields: [conversation], references: [id], onDelete: Cascade)
-  user_user_conversation_userTouser                         user?         @relation("user_conversation_userTouser", fields: [user], references: [id], onDelete: Cascade)
+  id                                       BigInt         @id @unique @default(autoincrement())
+  created_at                               DateTime       @default(now()) @db.Timestamptz(6)
+  user_id                                  String?        @unique @default(dbgenerated("requesting_user_id()"))
+  bio                                      String?        @default("")
+  links                                    Json[]
+  notification_notification_recieverTouser notification[] @relation("notification_recieverTouser")
+  notification_notification_senderTouser   notification[] @relation("notification_senderTouser")
+  user_project_user_project_userTouser     user_project[] @relation("user_project_userTouser")
+  user_tag_user_tag_userTouser             user_tag[]     @relation("user_tag_userTouser")
+  waiting_list_waiting_list_userTouser     waiting_list[] @relation("waiting_list_userTouser")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -116,4 +85,17 @@ model project_tag {
   complexity                           Int      @default(1) @db.SmallInt
   project_project_tag_projectToproject project? @relation("project_tag_projectToproject", fields: [project], references: [id], onDelete: Cascade)
   tag_project_tag_tagTotag             tag?     @relation("project_tag_tagTotag", fields: [tag], references: [id], onDelete: Cascade)
+}
+
+model notification {
+  id                                    BigInt   @id @default(autoincrement())
+  created_at                            DateTime @default(now()) @db.Timestamptz(6)
+  project                               BigInt?
+  sender                                BigInt?
+  reciever                              BigInt?
+  type                                  Int?     @db.SmallInt
+  new                                   Boolean  @default(true)
+  project_notification_projectToproject project? @relation("notification_projectToproject", fields: [project], references: [id], onDelete: Cascade)
+  user_notification_recieverTouser      user?    @relation("notification_recieverTouser", fields: [reciever], references: [id], onDelete: Cascade)
+  user_notification_senderTouser        user?    @relation("notification_senderTouser", fields: [sender], references: [id], onDelete: Cascade)
 }
