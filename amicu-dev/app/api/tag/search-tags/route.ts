@@ -2,10 +2,12 @@ import prisma from "@/lib/prisma/prismaClient";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(request: NextRequest) {
+export async function GET(
+    req: NextRequest
+) {
 
     try {
-        const searchParams = request.nextUrl.searchParams;
+        const searchParams = req.nextUrl.searchParams;
         const query = searchParams.get("q");
 
         if (!query || query.length < 2) {

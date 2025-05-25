@@ -78,3 +78,16 @@ export interface GitHubAPICommit {
   };
   html_url: string;
 }
+
+
+// Interface used in the algorithm for project suggestion
+export interface SuggestedProject {
+    project: {
+        id: bigint;
+        title: string;
+        thumbnail: string;
+        createdAt: Date;
+        tags: TagData[]
+    };
+    score : number;
+}
