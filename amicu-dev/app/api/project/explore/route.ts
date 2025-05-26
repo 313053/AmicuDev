@@ -116,6 +116,7 @@ export async function GET(
                     project: {
                         id: dbProject.id,
                         title: dbProject.title,
+                        description: dbProject.description,
                         thumbnail: dbProject.thumbnail,
                         createdAt: dbProject.created_at,
                         tags: dbProject.project_tag_project_tag_projectToproject.map((tag) => ({
@@ -137,6 +138,7 @@ export async function GET(
                     project: {
                         id: dbProject.id,
                         title: dbProject.title,
+                        description: dbProject.description,
                         thumbnail: dbProject.thumbnail,
                         createdAt: dbProject.created_at,
                         tags: dbProject.project_tag_project_tag_projectToproject.map((tag) => ({

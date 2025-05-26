@@ -85,6 +85,7 @@ export interface SuggestedProject {
     project: {
         id: bigint;
         title: string;
+        description: string;
         thumbnail: string;
         createdAt: Date;
         tags: TagData[]

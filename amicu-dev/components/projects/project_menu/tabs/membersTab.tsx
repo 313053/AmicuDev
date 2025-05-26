@@ -123,7 +123,7 @@ export default function MembersTab({ projectId, modPriviledges } : MembersTabPro
             <Card className="h-20 w-full md:w-52 bg-card-textArea relative">
                 <CardContent className="flex flex-row h-full w-full gap-2 justify-start items-center py-2 px-4">
                     <Link href={`/account/${data.clerkId}`}>
-                        <Avatar className="w-12 h-12 hover:brightness-150 hover:contrast-75">
+                        <Avatar className="w-12 h-12 hover:opacity-70">
                             <AvatarImage src={data.imageUrl} alt="avatar" />
                             <AvatarFallback className="w-full h-full">
                                 <User className="w-full h-full"/>
