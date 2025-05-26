@@ -12,6 +12,8 @@ import UserLinks from "./links"
 import { TagData, TagPostProps } from "@/lib/types/tagTypes"
 import { useParams } from "next/navigation"
 import Tags from "./tags/tags"
+import { Button } from "../ui/button"
+import Link from "next/link"
 
 
 
@@ -227,6 +229,9 @@ export default function ProfileCard() {
                     editable={isCurrentUser || false}
                     onSave={handleBioChange}
                 />
+                <Link href={`/account/${userId}/projects`} className="w-full">
+                    <Button className="w-full">Projects</Button>
+                </Link>
                 <div className="h-2"></div>
                 <p className="text-xl sm:text-2xl font-semibold w-full text-left">Skills</p>
                 {!isLoadingTags 

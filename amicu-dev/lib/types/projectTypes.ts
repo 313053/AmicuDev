@@ -9,6 +9,11 @@ export interface ProjectCardData{
     role : number
 }
 
+export interface ProjectSidebarData {
+    id : string
+    title : string 
+}
+
 export interface ProjectCreationData {
     title : string
     description : string

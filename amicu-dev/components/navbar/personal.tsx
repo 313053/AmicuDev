@@ -9,7 +9,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
-import { Bug, FolderCode, LogOut, Mail, Settings, User } from "lucide-react";
+import { Bug, FolderCode, LogOut, Settings, User } from "lucide-react";
 import UserAvatar from "../user_avatar/user-avatar";
 import { SignOutButton, useClerk } from "@clerk/nextjs";
 import { GetAccountLink } from "@/lib/links";
@@ -33,10 +33,6 @@ import Link from "next/link";
                             <span>My Profile</span>
                         </DropdownMenuItem>
                     </Link>
-                    <DropdownMenuItem>
-                        <Mail />
-                        <span>My Messages</span>
-                    </DropdownMenuItem>
                     <Link href={`${GetAccountLink()}/projects`}>
                         <DropdownMenuItem>
                             <FolderCode />

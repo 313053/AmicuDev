@@ -67,7 +67,7 @@ export default function ProjectDashboard({ content } : ProjectDashboardProps) {
             <div className="flex flex-row h-auto min-h-[720px] w-full sm:w-5/6 gap-x-2 items-stretch">
                 <Card className=" w-full">
                     { tab === 0 && (
-                        <AboutTab content={content} modPriviledges={modPriviledges}/>
+                        <AboutTab content={content} modPriviledges={modPriviledges} interloper={interloper}/>
                     )}
                     { tab === 1 && (
                         <MembersTab projectId={content.id} modPriviledges={modPriviledges} />

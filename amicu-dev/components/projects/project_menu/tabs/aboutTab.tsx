@@ -9,9 +9,10 @@ import ProjectJoin from "../projectJoin";
 interface AboutTabProps {
     content: ProjectDashboardData
     modPriviledges: boolean
+    interloper: boolean
 }
 
-export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
+export default function AboutTab ({ content, modPriviledges, interloper } : AboutTabProps) {
     const hasLinks = (content.links && content.links.length !== 0);
 
     return (
@@ -77,9 +78,11 @@ export default function AboutTab ({ content, modPriviledges } : AboutTabProps) {
                 <ProjectTags projectId={content.id} editable={modPriviledges}/>
             </div>
 
-            <div className="flex justify-center w-full border-t border-separator lg:hidden py-10">
-                <ProjectJoin projectId={content.id} />
-            </div>
+            { interloper && (
+                <div className="flex justify-center w-full border-t border-separator lg:hidden py-10">
+                    <ProjectJoin projectId={content.id} />
+                </div>
+            )}
         </CardContent>
     )
 }
