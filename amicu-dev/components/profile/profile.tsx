@@ -224,14 +224,14 @@ export default function ProfileCard() {
                         <span className="w-full h-full text-center font-semibold">User since {registrationDate}</span>
                     </div>
                 </div>
+                <Link href={`/account/${userId}/projects`} className="w-full">
+                    <Button className="w-full">Projects</Button>
+                </Link>
                 <UserBio
                     content={user?.bio || ""}
                     editable={isCurrentUser || false}
                     onSave={handleBioChange}
                 />
-                <Link href={`/account/${userId}/projects`} className="w-full">
-                    <Button className="w-full">Projects</Button>
-                </Link>
                 <div className="h-2"></div>
                 <p className="text-xl sm:text-2xl font-semibold w-full text-left">Skills</p>
                 {!isLoadingTags 

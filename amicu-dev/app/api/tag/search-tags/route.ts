@@ -1,7 +1,10 @@
 import prisma from "@/lib/prisma/prismaClient";
 import { NextRequest, NextResponse } from "next/server";
 
-
+// This api route handler returns the names of tags based on the query.
+// Used for autocompletion when the user chooses (or creates) their or their
+// project's tags. Suggestions begin from the 2nd input letter and return a 
+// maximum of 5 names.
 export async function GET(
     req: NextRequest
 ) {

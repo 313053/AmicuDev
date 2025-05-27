@@ -136,8 +136,13 @@ export function Notifications() {
             `You've been invited to join "${project.title}"`,
         ]
         const message = messages[notification.type-1];
+        const [ loadingAccept, setLoadingAccept ] = useState(false);
+        const [ loadingReject, setLoadingReject ] = useState(false);
 
         const acceptRequest = async () => {
+            if (loadingAccept) return;
+            
+            setLoadingAccept(true);
             const bodyData : NotificationPostData = {
                 id: notification.id,
                 senderId: notification.sender.id,
@@ -162,10 +167,14 @@ export function Notifications() {
             } catch (error) {
                 console.error("Error accepting request: ", error);
                 toast.error("Server Error: Failed to accept request");
-            } 
+                setLoadingAccept(false);
+            }
         }
 
         const rejectRequest = async () => {
+            if (loadingReject) return;
+
+            setLoadingReject(true);
             const bodyData : NotificationPostData = {
                 id: notification.id,
                 senderId: notification.sender.id,
@@ -190,7 +199,8 @@ export function Notifications() {
             } catch (error) {
                 console.error("Error rejecting request: ", error);
                 toast.error("Server Error: Failed to reject request");
-            } 
+                setLoadingReject(true);
+            }
         }
 
         return (
@@ -207,12 +217,12 @@ export function Notifications() {
                     </p>
                 </div>
                 <div className="row-span-1 col-span-1 justify-self-center p-1">
-                    <Button variant="navbar" size="sm" className="h-4 p-3" onClick={acceptRequest}>
+                    <Button variant="outline" size="sm" className="h-4 p-3" onClick={acceptRequest} disabled={loadingAccept}>
                         Accept
                     </Button>
                 </div>
                 <div className="row-span-1 col-span-1 justify-self-center items-center p-1">
-                    <Button variant="navbar" size="sm" className="h-4 p-3" onClick={rejectRequest}>
+                    <Button variant="outline" size="sm" className="h-4 p-3" onClick={rejectRequest} disabled={loadingReject}>
                         Reject
                     </Button>
                 </div>

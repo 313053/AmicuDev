@@ -82,7 +82,7 @@ export default function ExplorePage() {
                 <SuggestedProjectCard suggestedProject={project} key={index}/>
             )) }
             { loading && Array.from({ length: 3}).map((_, index) =>
-                <div className="flex flex-col w-full max-w-96 gap-2" key={index}>
+                <div className="flex flex-col w-full max-w-xl gap-2" key={index}>
                     <Skeleton className="w-full h-16" />
                     <Skeleton className="w-full h-64" />
                 </div>
@@ -96,13 +96,13 @@ function SuggestedProjectCard( { suggestedProject } : SuggestedProjectCardProps 
     const project = suggestedProject.project;
     const projectUrl = `/project/${project.id}`;
     return (
-        <Card className="w-full max-w-96">
+        <Card className="w-full max-w-xl">
             <CardContent>
-                <div className="flex flex-col h-auto z-10 gap-4 py-4">
+                <div className="flex flex-col h-auto z-10 gap-6 sm:gap-8 py-4">
                     <div className="grid grid-cols-4 gap-1">
                         <div className="col-span-1 justify-self-center content-center">
                             <Link href={projectUrl}>
-                                <Avatar className="w-14 h-14 rounded-xl bg-card-textArea hover:opacity-70">
+                                <Avatar className="w-14 h-14 sm:w-20 sm:h-20 rounded-xl bg-card-textArea hover:opacity-70">
                                     <AvatarImage src={project.thumbnail} alt="thumbnail" />
                                     <AvatarFallback className="w-full h-full bg-card-textArea">
                                         <p className="text-3xl font-bold">
@@ -114,7 +114,7 @@ function SuggestedProjectCard( { suggestedProject } : SuggestedProjectCardProps 
                         </div>
                         <div className="col-span-3 justify-self-center content-center">
                             <Link href={projectUrl}>
-                                <p className="text-xl sm:text-2xl font-semibold line-clamp-2 hover:opacity-70" title={project.title}>
+                                <p className="text-xl sm:text-3xl font-semibold line-clamp-2 hover:opacity-70" title={project.title}>
                                     {project.title}
                                 </p>
                             </Link>
@@ -127,7 +127,7 @@ function SuggestedProjectCard( { suggestedProject } : SuggestedProjectCardProps 
                             </Button>
                         </Link>
                     </div>
-                    <div className="w-full bg-card-textArea rounded-sm p-4">
+                    <div className="w-full min-h-20  bg-card-textArea rounded-sm p-4">
                         <p className="text-sm sm:text-md font-semibold line-clamp-4" title={project.description}>
                             {project.description}
                         </p>

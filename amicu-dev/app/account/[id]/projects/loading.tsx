@@ -15,7 +15,7 @@ export default function MyProjectsLoading() {
                         <Skeleton className="h-10 w-48"/>
                     </div>
                     <div className="w-full h-[480px] flex flex-wrap gap-4 justify-start sm:justify-start content-start overflow-y-auto py-6">
-                        {Array.from({ length : 9 }).map((_,i) => (
+                        {Array.from({ length : 4 }).map((_,i) => (
                             <div className="flex flex-row w-[250px] h-14 items-center justify-center gap-x-4" key={i}>
                                 <Skeleton className="w-16 h-full rounded-3xl" />
                                 <div className="w-5/6 h-full grid grid-rows-2 gap-y-2">
