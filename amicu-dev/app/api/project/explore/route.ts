@@ -154,7 +154,7 @@ export async function GET(
 
         // Pagination
         const paginatedProjects = suggestedProjects.slice(offset, offset + limit);
-        const hasMore = offset + limit < suggestedProjects.length;
+        const hasMore = offset < suggestedProjects.length;
 
         // Converts BigInts to string to avoid serialization error
         const serializedProjects = paginatedProjects.map((suggestion) => ({
